@@ -47,3 +47,6 @@ E:\Portfolio\portfolio\portfolio-backend\obj\Debug\net8.0\refint\portfolio-backe
 E:\Portfolio\portfolio\portfolio-backend\obj\Debug\net8.0\portfolio-backend.pdb
 E:\Portfolio\portfolio\portfolio-backend\obj\Debug\net8.0\portfolio-backend.genruntimeconfig.cache
 E:\Portfolio\portfolio\portfolio-backend\obj\Debug\net8.0\ref\portfolio-backend.dll
+E:\Portfolio\portfolio\portfolio-backend\bin\Debug\net8.0\FluentValidation.dll
+E:\Portfolio\portfolio\portfolio-backend\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
+E:\Portfolio\portfolio\portfolio-backend\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll

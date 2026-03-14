@@ -1,6 +1,8 @@
+using FluentValidation;
 using portfolio_backend.Data;
 using portfolio_backend.Services;
 using portfolio_backend.Settings;
+using portfolio_backend.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,9 @@ builder.Services.AddSingleton<MongoDbService>();
 // Anthropic / Claude
 builder.Services.Configure<AnthropicSettings>(
     builder.Configuration.GetSection("AnthropicSettings"));
+
+//Validation
+builder.Services.AddValidatorsFromAssemblyContaining<ContactMessageValidator>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
