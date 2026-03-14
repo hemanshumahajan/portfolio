@@ -2,8 +2,7 @@
 {
     public class ChatRequest
     {
-        public string Message { get; set; } = null!;
-        public List<ChatMessage> History { get; set; } = [];
+        public List<ChatMessage> Messages { get; set; } = [];
     }
 
     public class ChatMessage

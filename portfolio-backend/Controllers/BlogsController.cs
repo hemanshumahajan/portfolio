@@ -6,7 +6,7 @@ using portfolio_backend.Services;
 namespace portfolio_backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[blog]")]
     public class BlogsController : ControllerBase
     {
         private readonly IMongoCollection<BlogPost> _blogs;

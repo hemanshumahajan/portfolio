@@ -15,12 +15,12 @@ namespace portfolio_backend.Controllers
 
         //This system prompt makes the AI respond as YOUR portfolio assistant
         private const string SystemPrompt = """
-            You are a helpful assistant for Hemanshu's portfolio website. 
-            You know about his skills, projects, and experience as a developer.
-            Answer questions about his work, skills, and background in a friendly, concise way.
-            If someone asks something unrelated to the portfolio or professional topics, 
-            politely redirect them. Keep responses short and helpful.
-        """;
+            You are a helpful assistant on Hemansh's portfolio website.
+            Answer questions about his skills, projects, experience, and background
+            in a friendly and concise way. If asked something unrelated to his 
+            professional work, politely redirect the conversation.
+            Keep responses short — this is a chat widget, not an essay.
+            """;
 
         public ChatController(IOptions<AnthropicSettings> settings) => _apiKey = settings.Value.APIKey;
 
@@ -31,32 +31,31 @@ namespace portfolio_backend.Controllers
             httpClient.DefaultRequestHeaders.Add("x-api-key", _apiKey);
             httpClient.DefaultRequestHeaders.Add("anthropic-version", "2023-06-01");
 
-            // Messages array including conversation history
-            var messages = request.History
-                .Select(h => new {role = h.Role, content = h.Content })
-                .Append(new {role = "user", content = request.Message })
-                .ToList();
-
             var body = new
             {
                 model = "claude-sonnet-4-5",
                 max_tokens = 1024,
                 system = SystemPrompt,
-                messages
+                messages = request.Messages.Select(m => new
+                {
+                    role = m.Role,
+                    content = m.Content
+                })
             };
 
             var json = JsonSerializer.Serialize(body);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await httpClient.PostAsync("https://api.anthropic.com/v1/messages", content);
-            var responseBody = await response.Content.ReadAsStringAsync();
 
             if(!response.IsSuccessStatusCode)
             {
                 return StatusCode((int)response.StatusCode, "AI service error");
             }
 
+            var responseBody = await response.Content.ReadAsStringAsync();
             using var doc = JsonDocument.Parse(responseBody);
+
             var reply = doc.RootElement
                 .GetProperty("content")[0]
                 .GetProperty("text")

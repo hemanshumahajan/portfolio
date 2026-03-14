@@ -7,8 +7,16 @@
       "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\controllers\\blogscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:controllers\\blogscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\models\\chatrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:models\\chatrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\controllers\\contactcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,14 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\controllers\\projectscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:controllers\\projectscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\controllers\\blogscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:controllers\\blogscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\models\\chatrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:models\\chatrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\models\\contactmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -72,27 +72,27 @@
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAAACkAAAACAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACQAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-14T11:24:51.358Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ChatController.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ChatController.cs",
               "RelativeDocumentMoniker": "Controllers\\ChatController.cs",
               "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ChatController.cs",
               "RelativeToolTip": "Controllers\\ChatController.cs",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAYwD4AAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAADAAAAAAAAAAAAAYwDkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-14T11:09:41.327Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "ContactController.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ContactController.cs",
               "RelativeDocumentMoniker": "Controllers\\ContactController.cs",
@@ -100,25 +100,24 @@
               "RelativeToolTip": "Controllers\\ContactController.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAqwBUAAABeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T11:05:08.326Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-14T11:05:08.326Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "BlogsController.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\BlogsController.cs",
               "RelativeDocumentMoniker": "Controllers\\BlogsController.cs",
               "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\BlogsController.cs",
               "RelativeToolTip": "Controllers\\BlogsController.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAAAwD0AAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-14T10:51:23.868Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "ProjectsController.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ProjectsController.cs",
               "RelativeDocumentMoniker": "Controllers\\ProjectsController.cs",
@@ -126,18 +125,17 @@
               "RelativeToolTip": "Controllers\\ProjectsController.cs",
               "ViewState": "AgIAACkAAAAAAAAAAAAuwDgAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T09:09:32.967Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-14T09:09:32.967Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "ChatRequest.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Models\\ChatRequest.cs",
               "RelativeDocumentMoniker": "Models\\ChatRequest.cs",
               "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Models\\ChatRequest.cs",
               "RelativeToolTip": "Models\\ChatRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-14T09:06:57.572Z",
               "EditorCaption": ""
@@ -152,8 +150,7 @@
               "RelativeToolTip": "Models\\ContactMessage.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T09:04:39.201Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-14T09:04:39.201Z"
             },
             {
               "$type": "Document",
@@ -165,8 +162,7 @@
               "RelativeToolTip": "Models\\BlogPost.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAAAkwBIAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T09:03:06.238Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-14T09:03:06.238Z"
             },
             {
               "$type": "Document",
@@ -178,8 +174,7 @@
               "RelativeToolTip": "Models\\Project.cs",
               "ViewState": "AgIAAAIAAAAAAAAAAAAwwBAAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T08:54:27.852Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-14T08:54:27.852Z"
             },
             {
               "$type": "Document",
@@ -191,8 +186,7 @@
               "RelativeToolTip": "Services\\MongoDbService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T08:51:18.304Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-14T08:51:18.304Z"
             },
             {
               "$type": "Document",
@@ -204,8 +198,7 @@
               "RelativeToolTip": "Settings\\AnthropicSettings.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T08:50:33.377Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-14T08:50:33.377Z"
             },
             {
               "$type": "Document",
@@ -217,8 +210,7 @@
               "RelativeToolTip": "Settings\\MongoDbSettings.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T08:49:29.866Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-14T08:49:29.866Z"
             },
             {
               "$type": "Document",
@@ -230,8 +222,7 @@
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-03-14T08:47:13.416Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-14T08:47:13.416Z"
             }
           ]
         }
