@@ -14,6 +14,9 @@ namespace portfolio_backend.Models
         public string Content { get; set; } = null!;    // Full markdown content
         public string[] Tags { get; set; } = [];
         public string? CoverImageUrl { get; set; }
+        public string? ThumbnailUrl { get; set; } 
+        public string[] Images { get; set; } = [];     
+        public string[] Videos { get; set; } = [];
         public bool IsPublished { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

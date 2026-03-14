@@ -1,3 +1,4 @@
+using portfolio_backend.Data;
 using portfolio_backend.Services;
 using portfolio_backend.Settings;
 
@@ -34,4 +35,10 @@ app.UseSwaggerUI();
 app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.MapControllers();
+
+//Seed data
+using var scope = app.Services.CreateScope();
+var mongoservice = scope.ServiceProvider.GetRequiredService<MongoDbService>();
+await SeedData.SeedAsync(mongoservice);
+
 app.Run();

@@ -14,6 +14,7 @@ namespace portfolio_backend.Models
         public string? GithubUrl { get; set; }
         public string? LiveUrl { get; set; }
         public string? ImageUrl { get; set; }
+        public string? ThumbnailUrl { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
