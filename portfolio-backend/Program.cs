@@ -29,7 +29,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy => 
         policy.WithOrigins("http://localhost:5173",
-        "https://hemanshusportfolio.onrender.com") 
+        "https://hemanshumahajanportfolio.vercel.app/") 
         .AllowAnyHeader() 
         .AllowAnyMethod()));
 
