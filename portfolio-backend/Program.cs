@@ -31,8 +31,7 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:5173",
         "https://hemanshumahajanportfolio.vercel.app") 
         .AllowAnyHeader() 
-        .AllowAnyMethod()
-        .AllowCredentials()));
+        .AllowAnyMethod()   ));
 
 var app = builder.Build();
 
@@ -40,11 +39,23 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors("AllowFrontend");
 app.UseAuthorization();
+
+app.MapGet("/", () => Results.Ok(new { status = "Portfolio API is running" }));
+app.MapGet("/health", () => Results.Ok(new { status = "Healthy" }));
+
 app.MapControllers();
 
-//Seed data
-using var scope = app.Services.CreateScope();
-var mongoservice = scope.ServiceProvider.GetRequiredService<MongoDbService>();
-await SeedData.SeedAsync(mongoservice);
+// Seed — wrapped in try/catch so a DB hiccup never prevents app.Run()
+try
+{
+    using var scope = app.Services.CreateScope();
+    var mongoservice = scope.ServiceProvider.GetRequiredService<MongoDbService>();
+    await SeedData.SeedAsync(mongoservice);
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Seeding skipped: {ex.Message}");
+}
+
 
 app.Run();
