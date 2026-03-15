@@ -20,7 +20,7 @@ namespace portfolio_backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Send(ContactMessage message)
+        public async Task<IActionResult> Send([FromBody] ContactMessage message)
         {
             // Validate first
             var result = await _validator.ValidateAsync(message);
@@ -34,7 +34,7 @@ namespace portfolio_backend.Controllers
                         g => g.Select(e => e.ErrorMessage).ToArray()
                     );
 
-                return BadRequest(errors);
+                return BadRequest(new { errors });
             }
 
             message.SentAt = DateTime.UtcNow;
