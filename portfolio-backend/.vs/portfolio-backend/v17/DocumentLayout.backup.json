@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "E:\\Portfolio\\portfolio\\portfolio-backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
@@ -21,10 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\settings\\emailsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:settings\\emailsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -86,16 +86,16 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "EmailService.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Services\\EmailService.cs",
               "RelativeDocumentMoniker": "Services\\EmailService.cs",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Services\\EmailService.cs*",
-              "RelativeToolTip": "Services\\EmailService.cs*",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Services\\EmailService.cs",
+              "RelativeToolTip": "Services\\EmailService.cs",
               "ViewState": "AgIAAEkAAAAAAAAAAAAAAFkAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-16T16:50:03.145Z",
@@ -103,12 +103,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "EmailSettings.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Settings\\EmailSettings.cs",
               "RelativeDocumentMoniker": "Settings\\EmailSettings.cs",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Settings\\EmailSettings.cs*",
-              "RelativeToolTip": "Settings\\EmailSettings.cs*",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Settings\\EmailSettings.cs",
+              "RelativeToolTip": "Settings\\EmailSettings.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-16T16:49:18.143Z",
@@ -129,12 +129,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Program.cs*",
-              "RelativeToolTip": "Program.cs*",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Program.cs",
+              "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAADAAAAAAAAAAAAAmwCAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-14T11:24:51.358Z",
@@ -168,12 +168,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "ContactController.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ContactController.cs",
               "RelativeDocumentMoniker": "Controllers\\ContactController.cs",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ContactController.cs*",
-              "RelativeToolTip": "Controllers\\ContactController.cs*",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ContactController.cs",
+              "RelativeToolTip": "Controllers\\ContactController.cs",
               "ViewState": "AgIAACwAAAAAAAAAAAAiwDUAAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-14T11:05:08.326Z",
@@ -181,13 +181,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "appsettings.json",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\appsettings.json*",
-              "RelativeToolTip": "appsettings.json*",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABMAAAA4AAAAAAAAAA==",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABQAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-03-14T08:47:13.416Z",
               "EditorCaption": ""
@@ -207,13 +207,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": ".gitignore",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\.gitignore",
-              "RelativeToolTip": ".gitignore",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAADAAAAAAAAAA==",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\.gitignore*",
+              "RelativeToolTip": ".gitignore*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-03-14T18:31:52.558Z",
               "EditorCaption": ""
