@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Mail, Github, Linkedin, Send, Phone, MapPin, Loader2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -21,6 +21,18 @@ const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sending, setSending] = useState(false);
 
+  // Wake up Render backend when Contact section loads
+  useEffect(() => {
+    const warmup = async () => {
+      try {
+        await fetch(`${API_BASE_URL}/health`);
+      } catch {
+        // silently ignore
+      }
+    };
+    warmup();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
@@ -30,6 +42,9 @@ const Contact = () => {
 
     setSending(true);
     try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000);
+
       const response = await fetch(`${API_BASE_URL}/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -38,16 +53,32 @@ const Contact = () => {
           email: form.email.trim(),
           message: form.message.trim(),
         }),
+        signal: controller.signal,
       });
 
+      clearTimeout(timeout);
+
       if (!response.ok) {
-        throw new Error(`Failed to send message: ${response.status}`);
+        const errorData = await response.json().catch(() => null);
+        console.error("Contact form error:", errorData);
+        throw new Error(`Server error: ${response.status}`);
       }
 
       toast({ title: "Message sent!", description: "I'll get back to you soon." });
       setForm({ name: "", email: "", message: "" });
-    } catch {
-      toast({ title: "Failed to send message", description: "Please try again later.", variant: "destructive" });
+    } catch (error: unknown){
+      if (error instanceof Error && error.name === "AbortError") {
+        toast({
+          title: "Taking longer than usual...",
+          description: "Your message was likely sent! The server may be waking up.",
+        });
+      } else {
+        toast({
+          title: "Failed to send message",
+          description: "Please try again later.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setSending(false);
     }
