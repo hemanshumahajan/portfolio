@@ -3,12 +3,24 @@
   "WorkspaceRootPath": "E:\\Portfolio\\portfolio\\portfolio-backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\controllers\\contactcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:controllers\\contactcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\controllers\\contactcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:controllers\\contactcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\settings\\emailsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:settings\\emailsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
@@ -17,10 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B017B7D9-7010-474A-801F-51EA0BA08607}|portfolio-backend.csproj|e:\\portfolio\\portfolio\\portfolio-backend\\controllers\\blogscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -78,11 +86,128 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "EmailService.cs",
+              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Services\\EmailService.cs",
+              "RelativeDocumentMoniker": "Services\\EmailService.cs",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Services\\EmailService.cs*",
+              "RelativeToolTip": "Services\\EmailService.cs*",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAAAFkAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-16T16:50:03.145Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "EmailSettings.cs",
+              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Settings\\EmailSettings.cs",
+              "RelativeDocumentMoniker": "Settings\\EmailSettings.cs",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Settings\\EmailSettings.cs*",
+              "RelativeToolTip": "Settings\\EmailSettings.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-16T16:49:18.143Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SeedData.cs",
+              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Data\\SeedData.cs",
+              "RelativeDocumentMoniker": "Data\\SeedData.cs",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Data\\SeedData.cs",
+              "RelativeToolTip": "Data\\SeedData.cs",
+              "ViewState": "AgIAAE8AAAAAAAAAAIBJwGIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-14T13:59:16.479Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Program.cs*",
+              "RelativeToolTip": "Program.cs*",
+              "ViewState": "AgIAADAAAAAAAAAAAAAmwCAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-14T11:24:51.358Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ChatController.cs",
+              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ChatController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ChatController.cs",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ChatController.cs",
+              "RelativeToolTip": "Controllers\\ChatController.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAIBJwBMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-14T11:09:41.327Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "BlogsController.cs",
+              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\BlogsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\BlogsController.cs",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\BlogsController.cs",
+              "RelativeToolTip": "Controllers\\BlogsController.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAwAgAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-14T10:51:23.868Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "ContactController.cs",
+              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ContactController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ContactController.cs",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ContactController.cs*",
+              "RelativeToolTip": "Controllers\\ContactController.cs*",
+              "ViewState": "AgIAACwAAAAAAAAAAAAiwDUAAABOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-14T11:05:08.326Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\appsettings.json*",
+              "RelativeToolTip": "appsettings.json*",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABMAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-03-14T08:47:13.416Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Dockerfile",
+              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Dockerfile",
+              "RelativeDocumentMoniker": "Dockerfile",
+              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Dockerfile",
+              "RelativeToolTip": "Dockerfile",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-14T18:31:50.644Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": ".gitignore",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
@@ -95,80 +220,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Dockerfile",
-              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Dockerfile",
-              "RelativeDocumentMoniker": "Dockerfile",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Dockerfile",
-              "RelativeToolTip": "Dockerfile",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-03-14T18:31:50.644Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "SeedData.cs",
-              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Data\\SeedData.cs",
-              "RelativeDocumentMoniker": "Data\\SeedData.cs",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Data\\SeedData.cs",
-              "RelativeToolTip": "Data\\SeedData.cs",
-              "ViewState": "AgIAAFIAAAAAAAAAAAAAAGIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T13:59:16.479Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAADAAAAAAAAAAAAAmwDgAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T11:24:51.358Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ChatController.cs",
-              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ChatController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ChatController.cs",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ChatController.cs",
-              "RelativeToolTip": "Controllers\\ChatController.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T11:09:41.327Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "BlogsController.cs",
-              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\BlogsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\BlogsController.cs",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\BlogsController.cs",
-              "RelativeToolTip": "Controllers\\BlogsController.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAzwAgAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T10:51:23.868Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAChAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-03-14T08:47:13.416Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "Project.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Models\\Project.cs",
               "RelativeDocumentMoniker": "Models\\Project.cs",
@@ -176,24 +228,12 @@
               "RelativeToolTip": "Models\\Project.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAADwvxAAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T08:54:27.852Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ContactController.cs",
-              "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ContactController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ContactController.cs",
-              "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ContactController.cs",
-              "RelativeToolTip": "Controllers\\ContactController.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAQwCQAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T11:05:08.326Z",
+              "WhenOpened": "2026-03-14T08:54:27.852Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "ContactMessageValidator.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Validators\\ContactMessageValidator.cs",
               "RelativeDocumentMoniker": "Validators\\ContactMessageValidator.cs",
@@ -201,11 +241,12 @@
               "RelativeToolTip": "Validators\\ContactMessageValidator.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAuwBIAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T16:31:24.121Z"
+              "WhenOpened": "2026-03-14T16:31:24.121Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "ChatRequest.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Models\\ChatRequest.cs",
               "RelativeDocumentMoniker": "Models\\ChatRequest.cs",
@@ -213,23 +254,25 @@
               "RelativeToolTip": "Models\\ChatRequest.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T09:06:57.572Z"
+              "WhenOpened": "2026-03-14T09:06:57.572Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "BlogPost.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Models\\BlogPost.cs",
               "RelativeDocumentMoniker": "Models\\BlogPost.cs",
               "ToolTip": "E:\\Portfolio\\portfolio\\portfolio-backend\\Models\\BlogPost.cs",
               "RelativeToolTip": "Models\\BlogPost.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAA5wBAAAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAA3wBAAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T09:03:06.238Z"
+              "WhenOpened": "2026-03-14T09:03:06.238Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "ContactMessage.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Models\\ContactMessage.cs",
               "RelativeDocumentMoniker": "Models\\ContactMessage.cs",
@@ -237,11 +280,12 @@
               "RelativeToolTip": "Models\\ContactMessage.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T09:04:39.201Z"
+              "WhenOpened": "2026-03-14T09:04:39.201Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "ProjectsController.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Controllers\\ProjectsController.cs",
               "RelativeDocumentMoniker": "Controllers\\ProjectsController.cs",
@@ -249,11 +293,12 @@
               "RelativeToolTip": "Controllers\\ProjectsController.cs",
               "ViewState": "AgIAACkAAAAAAAAAAAAuwDgAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T09:09:32.967Z"
+              "WhenOpened": "2026-03-14T09:09:32.967Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
               "Title": "MongoDbService.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Services\\MongoDbService.cs",
               "RelativeDocumentMoniker": "Services\\MongoDbService.cs",
@@ -261,11 +306,12 @@
               "RelativeToolTip": "Services\\MongoDbService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T08:51:18.304Z"
+              "WhenOpened": "2026-03-14T08:51:18.304Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 17,
               "Title": "AnthropicSettings.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Settings\\AnthropicSettings.cs",
               "RelativeDocumentMoniker": "Settings\\AnthropicSettings.cs",
@@ -273,11 +319,12 @@
               "RelativeToolTip": "Settings\\AnthropicSettings.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T08:50:33.377Z"
+              "WhenOpened": "2026-03-14T08:50:33.377Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 18,
               "Title": "MongoDbSettings.cs",
               "DocumentMoniker": "E:\\Portfolio\\portfolio\\portfolio-backend\\Settings\\MongoDbSettings.cs",
               "RelativeDocumentMoniker": "Settings\\MongoDbSettings.cs",
@@ -285,7 +332,8 @@
               "RelativeToolTip": "Settings\\MongoDbSettings.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-14T08:49:29.866Z"
+              "WhenOpened": "2026-03-14T08:49:29.866Z",
+              "EditorCaption": ""
             }
           ]
         }

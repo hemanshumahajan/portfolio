@@ -1,3 +1,12 @@
-﻿appsettings.json
-appsettings*.json
-.vs
+﻿# Build output
+bin/
+obj/
+
+# Secrets
+appsettings.json
+appsettings.Development.json
+appsettings.local.json
+
+# VS files
+.vs/
+*.user
