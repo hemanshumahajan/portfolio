@@ -12,11 +12,16 @@ namespace portfolio_backend.Controllers
     {
         private readonly IMongoCollection<ContactMessage> _messages;
         private readonly IValidator<ContactMessage> _validator;
+        private readonly EmailService _emailService;
 
-        public ContactController(MongoDbService db, IValidator<ContactMessage> validator)
+        public ContactController(
+            MongoDbService db, 
+            IValidator<ContactMessage> validator,
+            EmailService emailService)
         {
             _messages = db.GetCollection<ContactMessage>("messages");
             _validator = validator;
+            _emailService = emailService;
         }
 
         [HttpPost]
@@ -39,6 +44,15 @@ namespace portfolio_backend.Controllers
 
             message.SentAt = DateTime.UtcNow;
             await _messages.InsertOneAsync(message);
+
+            try
+            {
+                await _emailService.SendContactNotificationAsync(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Email notification failed: {ex.Message}");
+            }
 
             return Ok(new { success = true, message = "Thanks! I'll get back to you soon." });
         }

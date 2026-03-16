@@ -17,10 +17,20 @@ builder.Services.AddSingleton<MongoDbService>();
 builder.Services.Configure<AnthropicSettings>(
     builder.Configuration.GetSection("AnthropicSettings"));
 
+//Email (Resend)
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddScoped<EmailService>();
+
 //Validation
 builder.Services.AddValidatorsFromAssemblyContaining<ContactMessageValidator>();
 
-builder.Services.AddControllers();
+// Controllers with camelCase JSON
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.PropertyNamingPolicy = 
+            System.Text.Json.JsonNamingPolicy.CamelCase);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

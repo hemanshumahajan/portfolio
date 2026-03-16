@@ -50,3 +50,6 @@ E:\Portfolio\portfolio\portfolio-backend\obj\Debug\net8.0\ref\portfolio-backend.
 E:\Portfolio\portfolio\portfolio-backend\bin\Debug\net8.0\FluentValidation.dll
 E:\Portfolio\portfolio\portfolio-backend\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
 E:\Portfolio\portfolio\portfolio-backend\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
+E:\Portfolio\portfolio\portfolio-backend\bin\Debug\net8.0\Microsoft.AspNetCore.WebUtilities.dll
+E:\Portfolio\portfolio\portfolio-backend\bin\Debug\net8.0\Microsoft.Net.Http.Headers.dll
+E:\Portfolio\portfolio\portfolio-backend\bin\Debug\net8.0\Resend.dll
