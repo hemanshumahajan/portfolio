@@ -1,5 +1,4 @@
 using FluentValidation;
-using portfolio_backend.Data;
 using portfolio_backend.Services;
 using portfolio_backend.Settings;
 using portfolio_backend.Validators;
@@ -54,18 +53,5 @@ app.MapGet("/", () => Results.Ok(new { status = "Portfolio API is running" }));
 app.MapGet("/health", () => Results.Ok(new { status = "Healthy" }));
 
 app.MapControllers();
-
-// Seed — wrapped in try/catch so a DB hiccup never prevents app.Run()
-try
-{
-    using var scope = app.Services.CreateScope();
-    var mongoservice = scope.ServiceProvider.GetRequiredService<MongoDbService>();
-    await SeedData.SeedAsync(mongoservice);
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Seeding skipped: {ex.Message}");
-}
-
 
 app.Run();

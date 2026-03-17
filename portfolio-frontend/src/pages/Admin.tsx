@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { API_BASE_URL } from "@/lib/api";
 
-const ADMIN_PASSWORD = "Hemanshu@123"; 
+const ADMIN_PASSWORD = "Hemanshu@123";
 
-// ── Types ──────────────────────────────────────────────────
 interface Project {
   id?: string;
   title: string;
@@ -46,32 +45,27 @@ const emptyBlog: BlogPost = {
   tags: [], thumbnailUrl: "", images: [], videos: [], isPublished: false
 };
 
-// ── Helper ─────────────────────────────────────────────────
 const api = (path: string, options?: RequestInit) =>
   fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers: { "Content-Type": "application/json", ...options?.headers },
   });
 
-// ── Main Component ─────────────────────────────────────────
 export default function Admin() {
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [tab, setTab] = useState<"projects" | "blogs" | "messages">("projects");
 
-  // Projects state
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectForm, setProjectForm] = useState<Project>(emptyProject);
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
 
-  // Blogs state
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [blogForm, setBlogForm] = useState<BlogPost>(emptyBlog);
   const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
 
-  // Messages state
   const [messages, setMessages] = useState<ContactMessage[]>([]);
-
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState("");
 
@@ -80,7 +74,6 @@ export default function Admin() {
     setTimeout(() => setToast(""), 3000);
   };
 
-  // Load data after login
   useEffect(() => {
     if (!authed) return;
     loadProjects();
@@ -88,7 +81,6 @@ export default function Admin() {
     loadMessages();
   }, [authed]);
 
-  // Auto-generate slug from title
   useEffect(() => {
     if (!editingBlogId) {
       setBlogForm(f => ({
@@ -100,40 +92,46 @@ export default function Admin() {
 
   const loadProjects = async () => {
     const res = await api("/projects");
-    const data = await res.json();
-    setProjects(data);
+    setProjects(await res.json());
   };
 
   const loadBlogs = async () => {
     const res = await api("/blog");
-    const data = await res.json();
-    setBlogs(data);
+    setBlogs(await res.json());
   };
 
   const loadMessages = async () => {
     const res = await api("/contact");
-    const data = await res.json();
-    setMessages(data);
+    setMessages(await res.json());
   };
 
-  // ── Auth ─────────────────────────────────────────────────
+  // ── Login page ─────────────────────────────────────────
   if (!authed) {
     return (
-      <div style={styles.loginWrap}>
-        <div style={styles.loginCard}>
-          <h1 style={styles.loginTitle}>Admin Panel</h1>
-          <p style={styles.loginSub}>Enter password to continue</p>
-          <input
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && password === ADMIN_PASSWORD && setAuthed(true)}
-            placeholder="Password"
-            style={styles.input}
-          />
+      <div style={s.loginWrap}>
+        <div style={s.loginCard}>
+          <h1 style={s.loginTitle}>⚙️ Admin Panel</h1>
+          <p style={s.loginSub}>Enter password to continue</p>
+          <div style={{ position: "relative" }}>
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && (password === ADMIN_PASSWORD ? setAuthed(true) : alert("Wrong password"))}
+              placeholder="Password"
+              style={{ ...s.input, paddingRight: 44 }}
+            />
+            <button
+              onClick={() => setShowPassword(p => !p)}
+              style={s.eyeBtn}
+              type="button"
+            >
+              {showPassword ? "🙈" : "👁️"}
+            </button>
+          </div>
           <button
             onClick={() => password === ADMIN_PASSWORD ? setAuthed(true) : alert("Wrong password")}
-            style={styles.btnPrimary}
+            style={s.btnPrimary}
           >
             Login
           </button>
@@ -142,7 +140,7 @@ export default function Admin() {
     );
   }
 
-  // ── Project handlers ──────────────────────────────────────
+  // ── Project handlers ───────────────────────────────────
   const saveProject = async () => {
     setLoading(true);
     try {
@@ -176,7 +174,7 @@ export default function Admin() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ── Blog handlers ─────────────────────────────────────────
+  // ── Blog handlers ──────────────────────────────────────
   const saveBlog = async () => {
     setLoading(true);
     try {
@@ -204,7 +202,7 @@ export default function Admin() {
     loadBlogs();
   };
 
-  const editBlog = (b: BlogPost & { excerpt?: string; date?: string }) => {
+  const editBlog = (b: any) => {
     setBlogForm({
       id: b.id,
       title: b.title,
@@ -221,198 +219,193 @@ export default function Admin() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ── Render ────────────────────────────────────────────────
   return (
-    <div style={styles.wrap}>
-      {toast && <div style={styles.toast}>{toast}</div>}
+    <div style={s.wrap}>
+      {toast && <div style={s.toast}>{toast}</div>}
 
-      <div style={styles.header}>
-        <h1 style={styles.title}>⚙️ Admin Panel</h1>
-        <button onClick={() => setAuthed(false)} style={styles.btnDanger}>Logout</button>
+      <div style={s.header}>
+        <h1 style={s.title}>⚙️ Admin Panel</h1>
+        <button onClick={() => setAuthed(false)} style={s.btnDanger}>Logout</button>
       </div>
 
-      {/* Tabs */}
-      <div style={styles.tabs}>
+      <div style={s.tabs}>
         {(["projects", "blogs", "messages"] as const).map(t => (
           <button key={t} onClick={() => setTab(t)}
-            style={{ ...styles.tab, ...(tab === t ? styles.tabActive : {}) }}>
+            style={{ ...s.tab, ...(tab === t ? s.tabActive : {}) }}>
             {t.charAt(0).toUpperCase() + t.slice(1)}
           </button>
         ))}
       </div>
 
-      {/* ── PROJECTS TAB ── */}
+      {/* ── PROJECTS ── */}
       {tab === "projects" && (
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>
-            {editingProjectId ? "✏️ Edit Project" : "➕ Add Project"}
-          </h2>
-          <div style={styles.form}>
+        <div style={s.section}>
+          <h2 style={s.sectionTitle}>{editingProjectId ? "✏️ Edit Project" : "➕ Add Project"}</h2>
+          <div style={s.form}>
             {(["title", "description", "githubUrl", "liveUrl", "imageUrl", "thumbnailUrl"] as const).map(field => (
-              <div key={field} style={styles.formGroup}>
-                <label style={styles.label}>{field}</label>
+              <div key={field} style={s.formGroup}>
+                <label style={s.label}>{field}</label>
                 {field === "description"
                   ? <textarea value={projectForm[field]} rows={3}
                       onChange={e => setProjectForm({ ...projectForm, [field]: e.target.value })}
-                      style={styles.textarea} />
+                      style={s.textarea} />
                   : <input value={projectForm[field]}
                       onChange={e => setProjectForm({ ...projectForm, [field]: e.target.value })}
-                      style={styles.input} />
+                      style={s.input} />
                 }
               </div>
             ))}
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Technologies (comma separated)</label>
+            <div style={s.formGroup}>
+              <label style={s.label}>Technologies (comma separated)</label>
               <input
                 value={projectForm.technologies.join(", ")}
                 onChange={e => setProjectForm({
                   ...projectForm,
                   technologies: e.target.value.split(",").map(t => t.trim()).filter(Boolean)
                 })}
-                style={styles.input}
+                style={s.input}
                 placeholder="React, TypeScript, MongoDB"
               />
             </div>
-            <div style={styles.btnRow}>
-              <button onClick={saveProject} disabled={loading} style={styles.btnPrimary}>
+            <div style={s.btnRow}>
+              <button onClick={saveProject} disabled={loading} style={s.btnPrimary}>
                 {loading ? "Saving..." : editingProjectId ? "Update Project" : "Add Project"}
               </button>
               {editingProjectId && (
                 <button onClick={() => { setProjectForm(emptyProject); setEditingProjectId(null); }}
-                  style={styles.btnSecondary}>Cancel</button>
+                  style={s.btnSecondary}>Cancel</button>
               )}
             </div>
           </div>
 
-          <h2 style={{ ...styles.sectionTitle, marginTop: 32 }}>📁 All Projects ({projects.length})</h2>
+          <h2 style={{ ...s.sectionTitle, marginTop: 24 }}>📁 All Projects ({projects.length})</h2>
+          {projects.length === 0 && <p style={s.empty}>No projects yet. Add one above.</p>}
           {projects.map(p => (
-            <div key={p.id} style={styles.card}>
-              <div style={styles.cardContent}>
-                <strong style={styles.cardTitle}>{p.title}</strong>
-                <p style={styles.cardSub}>{p.description?.slice(0, 100)}...</p>
-                <div style={styles.tags}>
+            <div key={p.id} style={s.card}>
+              <div style={s.cardContent}>
+                <strong style={s.cardTitle}>{p.title}</strong>
+                <p style={s.cardSub}>{p.description?.slice(0, 120)}...</p>
+                <div style={s.tagRow}>
                   {(p.technologies as unknown as string[])?.map(t => (
-                    <span key={t} style={styles.tag}>{t}</span>
+                    <span key={t} style={s.tag}>{t}</span>
                   ))}
                 </div>
               </div>
-              <div style={styles.cardActions}>
-                <button onClick={() => editProject(p)} style={styles.btnSecondary}>Edit</button>
-                <button onClick={() => deleteProject(p.id!)} style={styles.btnDanger}>Delete</button>
+              <div style={s.cardActions}>
+                <button onClick={() => editProject(p)} style={s.btnSecondary}>Edit</button>
+                <button onClick={() => deleteProject(p.id!)} style={s.btnDanger}>Delete</button>
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* ── BLOGS TAB ── */}
+      {/* ── BLOGS ── */}
       {tab === "blogs" && (
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>
-            {editingBlogId ? "✏️ Edit Blog Post" : "➕ Add Blog Post"}
-          </h2>
-          <div style={styles.form}>
+        <div style={s.section}>
+          <h2 style={s.sectionTitle}>{editingBlogId ? "✏️ Edit Post" : "➕ Add Blog Post"}</h2>
+          <div style={s.form}>
             {(["title", "slug", "summary", "thumbnailUrl"] as const).map(field => (
-              <div key={field} style={styles.formGroup}>
-                <label style={styles.label}>{field}</label>
+              <div key={field} style={s.formGroup}>
+                <label style={s.label}>{field}</label>
                 <input value={blogForm[field]}
                   onChange={e => setBlogForm({ ...blogForm, [field]: e.target.value })}
-                  style={styles.input} />
+                  style={s.input} />
               </div>
             ))}
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Content (Markdown)</label>
-              <textarea value={blogForm.content} rows={10}
+            <div style={s.formGroup}>
+              <label style={s.label}>Content (Markdown)</label>
+              <textarea value={blogForm.content} rows={12}
                 onChange={e => setBlogForm({ ...blogForm, content: e.target.value })}
-                style={styles.textarea} placeholder="## Heading&#10;Your content here..." />
+                style={s.textarea} placeholder="## Heading&#10;Your content here..." />
             </div>
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Tags (comma separated)</label>
+            <div style={s.formGroup}>
+              <label style={s.label}>Tags (comma separated)</label>
               <input
                 value={blogForm.tags.join(", ")}
                 onChange={e => setBlogForm({
                   ...blogForm,
                   tags: e.target.value.split(",").map(t => t.trim()).filter(Boolean)
                 })}
-                style={styles.input} placeholder="React, ASP.NET, MongoDB" />
+                style={s.input} placeholder="React, ASP.NET, MongoDB" />
             </div>
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Images (one URL per line)</label>
+            <div style={s.formGroup}>
+              <label style={s.label}>Images (one URL per line)</label>
               <textarea value={blogForm.images.join("\n")} rows={3}
                 onChange={e => setBlogForm({
                   ...blogForm,
-                  images: e.target.value.split("\n").map(s => s.trim()).filter(Boolean)
+                  images: e.target.value.split("\n").map(u => u.trim()).filter(Boolean)
                 })}
-                style={styles.textarea} placeholder="https://..." />
+                style={s.textarea} placeholder="https://..." />
             </div>
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Videos (one YouTube embed URL per line)</label>
+            <div style={s.formGroup}>
+              <label style={s.label}>Videos (one YouTube embed URL per line)</label>
               <textarea value={blogForm.videos.join("\n")} rows={3}
                 onChange={e => setBlogForm({
                   ...blogForm,
-                  videos: e.target.value.split("\n").map(s => s.trim()).filter(Boolean)
+                  videos: e.target.value.split("\n").map(u => u.trim()).filter(Boolean)
                 })}
-                style={styles.textarea} placeholder="https://www.youtube.com/embed/..." />
+                style={s.textarea} placeholder="https://www.youtube.com/embed/..." />
             </div>
-            <div style={styles.formGroup}>
-              <label style={styles.label}>
+            <div style={s.formGroup}>
+              <label style={{ ...s.label, flexDirection: "row", alignItems: "center", gap: 8, display: "flex" }}>
                 <input type="checkbox" checked={blogForm.isPublished}
-                  onChange={e => setBlogForm({ ...blogForm, isPublished: e.target.checked })}
-                  style={{ marginRight: 8 }} />
+                  onChange={e => setBlogForm({ ...blogForm, isPublished: e.target.checked })} />
                 Published (visible on site)
               </label>
             </div>
-            <div style={styles.btnRow}>
-              <button onClick={saveBlog} disabled={loading} style={styles.btnPrimary}>
+            <div style={s.btnRow}>
+              <button onClick={saveBlog} disabled={loading} style={s.btnPrimary}>
                 {loading ? "Saving..." : editingBlogId ? "Update Post" : "Add Post"}
               </button>
               {editingBlogId && (
                 <button onClick={() => { setBlogForm(emptyBlog); setEditingBlogId(null); }}
-                  style={styles.btnSecondary}>Cancel</button>
+                  style={s.btnSecondary}>Cancel</button>
               )}
             </div>
           </div>
 
-          <h2 style={{ ...styles.sectionTitle, marginTop: 32 }}>📝 All Posts ({blogs.length})</h2>
+          <h2 style={{ ...s.sectionTitle, marginTop: 24 }}>📝 All Posts ({blogs.length})</h2>
+          {blogs.length === 0 && <p style={s.empty}>No blog posts yet. Add one above.</p>}
           {blogs.map((b: any) => (
-            <div key={b.id} style={styles.card}>
-              <div style={styles.cardContent}>
-                <strong style={styles.cardTitle}>{b.title}</strong>
-                <p style={styles.cardSub}>{b.excerpt || b.summary}</p>
-                <div style={styles.tags}>
-                  {b.tags?.map((t: string) => <span key={t} style={styles.tag}>{t}</span>)}
-                  <span style={{ ...styles.tag, background: b.isPublished ? "#16a34a22" : "#dc262622", color: b.isPublished ? "#16a34a" : "#dc2626" }}>
-                    {b.isPublished ? "Published" : "Draft"}
+            <div key={b.id} style={s.card}>
+              <div style={s.cardContent}>
+                <strong style={s.cardTitle}>{b.title}</strong>
+                <p style={s.cardSub}>{b.excerpt || b.summary}</p>
+                <div style={s.tagRow}>
+                  {b.tags?.map((t: string) => <span key={t} style={s.tag}>{t}</span>)}
+                  <span style={{
+                    ...s.tag,
+                    background: b.isPublished ? "#dcfce7" : "#fee2e2",
+                    color: b.isPublished ? "#16a34a" : "#dc2626"
+                  }}>
+                    {b.isPublished ? "✅ Published" : "📝 Draft"}
                   </span>
                 </div>
               </div>
-              <div style={styles.cardActions}>
-                <button onClick={() => editBlog(b)} style={styles.btnSecondary}>Edit</button>
-                <button onClick={() => deleteBlog(b.id!)} style={styles.btnDanger}>Delete</button>
+              <div style={s.cardActions}>
+                <button onClick={() => editBlog(b)} style={s.btnSecondary}>Edit</button>
+                <button onClick={() => deleteBlog(b.id!)} style={s.btnDanger}>Delete</button>
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* ── MESSAGES TAB ── */}
+      {/* ── MESSAGES ── */}
       {tab === "messages" && (
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>📬 Contact Messages ({messages.length})</h2>
-          {messages.length === 0 && <p style={styles.cardSub}>No messages yet.</p>}
+        <div style={s.section}>
+          <h2 style={s.sectionTitle}>📬 Contact Messages ({messages.length})</h2>
+          {messages.length === 0 && <p style={s.empty}>No messages yet.</p>}
           {messages.map(m => (
-            <div key={m.id} style={styles.card}>
-              <div style={styles.cardContent}>
-                <strong style={styles.cardTitle}>{m.name}</strong>
-                <a href={"mailto:" + m.email} style={styles.emailLink}>{m.email}</a>
-                <p style={{ ...styles.cardSub, marginTop: 8 }}>{m.message}</p>
-                <p style={{ ...styles.cardSub, fontSize: 11, marginTop: 4 }}>
+            <div key={m.id} style={s.card}>
+              <div style={s.cardContent}>
+                <strong style={s.cardTitle}>{m.name}</strong>
+                <p style={{ ...s.cardSub, color: "#6366f1", marginTop: 2 }}>{m.email}</p>
+                <p style={{ ...s.cardSub, marginTop: 8, lineHeight: 1.6 }}>{m.message}</p>
+                <p style={{ ...s.cardSub, fontSize: 11, marginTop: 6, color: "#9ca3af" }}>
                   {new Date(m.sentAt).toLocaleString()}
                 </p>
-              </div>
-              <div style={styles.cardActions}>
-                <a href={"mailto:" + m.email + "?subject=Re: Your message"}
-                  style={styles.btnPrimary}>Reply</a>
               </div>
             </div>
           ))}
@@ -422,36 +415,37 @@ export default function Admin() {
   );
 }
 
-// ── Styles ──────────────────────────────────────────────────
-const styles: Record<string, React.CSSProperties> = {
-  wrap: { maxWidth: 800, margin: "0 auto", padding: "24px 16px", fontFamily: "system-ui, sans-serif" },
+// ── Styles ─────────────────────────────────────────────────
+const s: Record<string, React.CSSProperties> = {
+  wrap: { maxWidth: 800, margin: "0 auto", padding: "24px 16px", fontFamily: "system-ui,sans-serif", background: "#ffffff", minHeight: "100vh", color: "#111827" },
   header: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 },
-  title: { fontSize: 24, fontWeight: 700, margin: 0 },
-  tabs: { display: "flex", gap: 8, marginBottom: 24, borderBottom: "2px solid #e5e7eb", paddingBottom: 0 },
+  title: { fontSize: 22, fontWeight: 700, margin: 0, color: "#111827" },
+  tabs: { display: "flex", gap: 4, marginBottom: 24, borderBottom: "2px solid #e5e7eb", paddingBottom: 0 },
   tab: { padding: "10px 20px", border: "none", background: "none", cursor: "pointer", fontSize: 14, fontWeight: 500, color: "#6b7280", borderBottom: "2px solid transparent", marginBottom: -2 },
   tabActive: { color: "#6366f1", borderBottom: "2px solid #6366f1" },
   section: { display: "flex", flexDirection: "column", gap: 12 },
-  sectionTitle: { fontSize: 16, fontWeight: 600, margin: "0 0 8px" },
-  form: { background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 10, padding: 20, display: "flex", flexDirection: "column", gap: 12, marginBottom: 8 },
-  formGroup: { display: "flex", flexDirection: "column", gap: 4 },
+  sectionTitle: { fontSize: 15, fontWeight: 600, margin: "0 0 4px", color: "#111827" },
+  form: { background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 10, padding: 20, display: "flex", flexDirection: "column", gap: 14 },
+  formGroup: { display: "flex", flexDirection: "column", gap: 5 },
   label: { fontSize: 12, fontWeight: 600, color: "#374151", textTransform: "capitalize" },
-  input: { padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: 6, fontSize: 14, outline: "none" },
-  textarea: { padding: "8px 12px", border: "1px solid #d1d5db", borderRadius: 6, fontSize: 14, outline: "none", resize: "vertical", fontFamily: "monospace" },
+  input: { padding: "9px 12px", border: "1px solid #d1d5db", borderRadius: 6, fontSize: 14, color: "#111827", background: "#ffffff", outline: "none" },
+  textarea: { padding: "9px 12px", border: "1px solid #d1d5db", borderRadius: 6, fontSize: 14, color: "#111827", background: "#ffffff", outline: "none", resize: "vertical", fontFamily: "monospace" },
   btnRow: { display: "flex", gap: 8, marginTop: 4 },
-  btnPrimary: { padding: "9px 18px", background: "#6366f1", color: "white", border: "none", borderRadius: 6, cursor: "pointer", fontSize: 14, fontWeight: 500, textDecoration: "none" },
+  btnPrimary: { padding: "9px 18px", background: "#6366f1", color: "#ffffff", border: "none", borderRadius: 6, cursor: "pointer", fontSize: 14, fontWeight: 500 },
   btnSecondary: { padding: "9px 18px", background: "#f3f4f6", color: "#374151", border: "1px solid #d1d5db", borderRadius: 6, cursor: "pointer", fontSize: 14 },
   btnDanger: { padding: "9px 18px", background: "#fee2e2", color: "#dc2626", border: "none", borderRadius: 6, cursor: "pointer", fontSize: 14 },
-  card: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", background: "white", border: "1px solid #e5e7eb", borderRadius: 10, padding: 16, gap: 12 },
+  card: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", background: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 10, padding: 16, gap: 12 },
   cardContent: { flex: 1 },
-  cardTitle: { fontSize: 15, fontWeight: 600, display: "block", marginBottom: 4 },
+  cardTitle: { fontSize: 15, fontWeight: 600, display: "block", marginBottom: 4, color: "#111827" },
   cardSub: { fontSize: 13, color: "#6b7280", margin: 0 },
   cardActions: { display: "flex", flexDirection: "column", gap: 6, flexShrink: 0 },
-  tags: { display: "flex", flexWrap: "wrap", gap: 4, marginTop: 8 },
+  tagRow: { display: "flex", flexWrap: "wrap", gap: 4, marginTop: 8 },
   tag: { fontSize: 11, padding: "2px 8px", background: "#ede9fe", color: "#6366f1", borderRadius: 99 },
-  toast: { position: "fixed", top: 20, right: 20, background: "#18181b", color: "white", padding: "12px 20px", borderRadius: 8, fontSize: 14, zIndex: 9999 },
+  toast: { position: "fixed", top: 20, right: 20, background: "#18181b", color: "#ffffff", padding: "12px 20px", borderRadius: 8, fontSize: 14, zIndex: 9999 },
   loginWrap: { minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f9fafb" },
-  loginCard: { background: "white", border: "1px solid #e5e7eb", borderRadius: 12, padding: 32, width: 320, display: "flex", flexDirection: "column", gap: 12 },
-  loginTitle: { fontSize: 22, fontWeight: 700, margin: 0 },
+  loginCard: { background: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 12, padding: 32, width: 320, display: "flex", flexDirection: "column", gap: 12, boxShadow: "0 4px 6px rgba(0,0,0,0.05)" },
+  loginTitle: { fontSize: 22, fontWeight: 700, margin: 0, color: "#111827" },
   loginSub: { fontSize: 14, color: "#6b7280", margin: 0 },
-  emailLink: { fontSize: 13, color: "#6366f1" },
+  eyeBtn: { position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 16, padding: 4 },
+  empty: { fontSize: 14, color: "#9ca3af", textAlign: "center", padding: "24px 0" },
 };
