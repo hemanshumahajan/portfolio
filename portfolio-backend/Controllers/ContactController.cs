@@ -24,6 +24,12 @@ namespace portfolio_backend.Controllers
             _emailService = emailService;
         }
 
+        [HttpGet]
+        public async Task<List<ContactMessage>> GetAll() =>
+            await _messages.Find(_ => true)
+                   .SortByDescending(m => m.SentAt)
+                   .ToListAsync();
+
         [HttpPost]
         public async Task<IActionResult> Send([FromBody] ContactMessage message)
         {
