@@ -12,9 +12,9 @@ builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection("MongoDbSettings"));
 builder.Services.AddSingleton<MongoDbService>();
 
-// Anthropic / Claude
-builder.Services.Configure<AnthropicSettings>(
-    builder.Configuration.GetSection("AnthropicSettings"));
+// OpenAI
+builder.Services.Configure<OpenAISettings>(
+    builder.Configuration.GetSection("OpenAISettings"));
 
 //Email (Resend)
 builder.Services.Configure<EmailSettings>(
