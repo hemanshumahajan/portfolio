@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { API_BASE_URL } from "@/lib/api";
+import { SingleUpload, MultiUpload } from "@/components/ImageUpload";
 
-const ADMIN_PASSWORD = "Hemanshu@123";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 interface Project {
   id?: string;
@@ -242,7 +243,8 @@ export default function Admin() {
         <div style={s.section}>
           <h2 style={s.sectionTitle}>{editingProjectId ? "✏️ Edit Project" : "➕ Add Project"}</h2>
           <div style={s.form}>
-            {(["title", "description", "githubUrl", "liveUrl", "imageUrl", "thumbnailUrl"] as const).map(field => (
+            {/* Text fields only — no image fields in the loop */}
+            {(["title", "description", "githubUrl", "liveUrl"] as const).map(field => (
               <div key={field} style={s.formGroup}>
                 <label style={s.label}>{field}</label>
                 {field === "description"
@@ -255,6 +257,18 @@ export default function Admin() {
                 }
               </div>
             ))}
+
+              {/* Image uploads */}
+              <SingleUpload
+                label="Thumbnail Image"
+                value={projectForm.thumbnailUrl}
+                onChange={url => setProjectForm({ ...projectForm, thumbnailUrl: url })}
+              />
+              <SingleUpload
+                label="Main Image"
+                value={projectForm.imageUrl}
+                onChange={url => setProjectForm({ ...projectForm, imageUrl: url })}
+              />
             <div style={s.formGroup}>
               <label style={s.label}>Technologies (comma separated)</label>
               <input
@@ -305,14 +319,21 @@ export default function Admin() {
         <div style={s.section}>
           <h2 style={s.sectionTitle}>{editingBlogId ? "✏️ Edit Post" : "➕ Add Blog Post"}</h2>
           <div style={s.form}>
-            {(["title", "slug", "summary", "thumbnailUrl"] as const).map(field => (
-              <div key={field} style={s.formGroup}>
-                <label style={s.label}>{field}</label>
-                <input value={blogForm[field]}
-                  onChange={e => setBlogForm({ ...blogForm, [field]: e.target.value })}
-                  style={s.input} />
-              </div>
-            ))}
+            {(["title", "slug", "summary"] as const).map(field => (
+            <div key={field} style={s.formGroup}>
+              <label style={s.label}>{field}</label>
+              <input value={blogForm[field]}
+                onChange={e => setBlogForm({ ...blogForm, [field]: e.target.value })}
+                style={s.input} />
+            </div>
+          ))}
+
+              {/* Thumbnail upload */}
+              <SingleUpload
+                label="Thumbnail Image"
+                value={blogForm.thumbnailUrl}
+                onChange={url => setBlogForm({ ...blogForm, thumbnailUrl: url })}
+              />
             <div style={s.formGroup}>
               <label style={s.label}>Content (Markdown)</label>
               <textarea value={blogForm.content} rows={12}
@@ -331,21 +352,21 @@ export default function Admin() {
             </div>
             <div style={s.formGroup}>
               <label style={s.label}>Images (one URL per line)</label>
-              <textarea value={blogForm.images.join("\n")} rows={3}
-                onChange={e => setBlogForm({
-                  ...blogForm,
-                  images: e.target.value.split("\n").map(u => u.trim()).filter(Boolean)
-                })}
-                style={s.textarea} placeholder="https://..." />
+              <MultiUpload
+                label="Images"
+                values={blogForm.images}
+                onChange={urls => setBlogForm({ ...blogForm, images: urls })}
+                accept="image/*"
+              />
             </div>
             <div style={s.formGroup}>
               <label style={s.label}>Videos (one YouTube embed URL per line)</label>
-              <textarea value={blogForm.videos.join("\n")} rows={3}
-                onChange={e => setBlogForm({
-                  ...blogForm,
-                  videos: e.target.value.split("\n").map(u => u.trim()).filter(Boolean)
-                })}
-                style={s.textarea} placeholder="https://www.youtube.com/embed/..." />
+              <MultiUpload
+                label="Videos (upload or paste YouTube embed URLs)"
+                values={blogForm.videos}
+                onChange={urls => setBlogForm({ ...blogForm, videos: urls })}
+                accept="video/*"
+              />
             </div>
             <div style={s.formGroup}>
               <label style={{ ...s.label, flexDirection: "row", alignItems: "center", gap: 8, display: "flex" }}>
