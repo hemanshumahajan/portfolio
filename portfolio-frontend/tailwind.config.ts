@@ -89,10 +89,10 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
         },
-        "typing-cursor": {
-          "0%, 100%": { borderColor: "hsl(var(--primary))" },
-          "50%": { borderColor: "transparent" },
-        },
+        // "typing-cursor": {
+        //   "0%, 100%": { borderColor: "hsl(var(--primary))" },
+        //   "50%": { borderColor: "transparent" },
+        // },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -100,7 +100,7 @@ export default {
         "fade-up": "fade-up 0.6s ease-out forwards",
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         float: "float 6s ease-in-out infinite",
-        "typing-cursor": "typing-cursor 1s step-end infinite",
+        // "typing-cursor": "typing-cursor 1s step-end infinite",
       },
     },
   },

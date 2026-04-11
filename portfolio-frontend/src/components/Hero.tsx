@@ -24,17 +24,11 @@ const Hero = () => {
     let timer: ReturnType<typeof setTimeout>;
 
     if (!isDeleting && text.length < currentRole.length) {
-      timer = setTimeout(() => {
-        setText(currentRole.slice(0, text.length + 1));
-      }, 80);
+      timer = setTimeout(() => setText(currentRole.slice(0, text.length + 1)), 80);
     } else if (!isDeleting && text.length === currentRole.length) {
-      timer = setTimeout(() => {
-        setIsDeleting(true);
-      }, 1500);
+      timer = setTimeout(() => setIsDeleting(true), 1500);
     } else if (isDeleting && text.length > 0) {
-      timer = setTimeout(() => {
-        setText(currentRole.slice(0, text.length - 1));
-      }, 40);
+      timer = setTimeout(() => setText(currentRole.slice(0, text.length - 1)), 40);
     } else if (isDeleting && text.length === 0) {
       setIsDeleting(false);
       setRoleIndex((prev) => (prev + 1) % roles.length);
@@ -53,17 +47,27 @@ const Hero = () => {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Grid background */}
-      <div className="absolute inset-0 grid-bg opacity-40" />
+      <div
+        className="absolute inset-0 grid-bg opacity-40"
+        style={{ contentVisibility: "auto" }}
+      />
 
       {/* Radial glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/5 blur-[120px]" />
-      <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-accent/5 blur-[100px]" />
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/5 blur-[120px]"
+        style={{ contentVisibility: "auto" }}
+      />
+      <div
+        className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-accent/5 blur-[100px]"
+        style={{ contentVisibility: "auto" }}
+      />
 
       <div className="relative z-10 container mx-auto px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
+          style={{ willChange: "transform, opacity" }}
         >
           <p className="font-mono text-primary text-sm md:text-base tracking-widest uppercase mb-4">
             {"// Welcome to my digital space"}
@@ -81,10 +85,17 @@ const Hero = () => {
             <span className="font-mono text-xl md:text-3xl text-primary mx-2">
               {text}
             </span>
-            <span className="border-r-2 border-primary h-8 md:h-10 animate-typing-cursor" />
+
+            {/* ✅ GPU composited cursor using opacity, not border-color */}
+            <span
+              className="font-mono text-xl md:text-3xl text-primary animate-typing-cursor"
+              aria-hidden="true"
+            >
+              |
+            </span>
+
             <span className="font-mono text-xl md:text-3xl text-muted-foreground ml-1">
-              {"/"}
-              {">"}
+              {"/ >"}
             </span>
           </div>
 

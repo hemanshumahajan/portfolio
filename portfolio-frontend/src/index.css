@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -45,7 +43,6 @@
     --sidebar-border: 222 30% 16%;
     --sidebar-ring: 190 95% 50%;
 
-    /* Custom tokens */
     --glow-primary: 190 95% 50%;
     --glow-accent: 260 80% 60%;
     --surface: 222 35% 10%;
@@ -60,10 +57,29 @@
   body {
     @apply bg-background text-foreground font-sans;
     font-family: 'Inter', sans-serif;
+    /* Prevent layout shift from scrollbar appearing */
+    scrollbar-gutter: stable;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ✅ Add font-display swap fallback fonts to reduce layout shift */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Inter');
+  }
+
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('JetBrains Mono');
   }
 
   ::selection {
@@ -124,5 +140,31 @@
       linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
       linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
     background-size: 60px 60px;
+  }
+
+  /* ✅ Fixed typing cursor — uses opacity instead of border-color */
+  /* opacity is GPU composited, border-color is NOT */
+  .animate-typing-cursor {
+    animation: typing-cursor 1s step-end infinite;
+    will-change: opacity;
+  }
+
+  @keyframes typing-cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* ✅ Lazy load images below the fold */
+  img[loading="lazy"] {
+    content-visibility: auto;
+  }
+
+  /* ✅ Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }

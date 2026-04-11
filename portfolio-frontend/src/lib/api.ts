@@ -1,6 +1,17 @@
 // Configure this to point to your .NET backend URL
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
 
+function optimizeCloudinaryUrl(url: string | null, width: number): string {
+  if (!url) return "";
+  // Only transform Cloudinary URLs
+  if (!url.includes("res.cloudinary.com")) return url;
+  // Insert transformation: auto format, auto quality, resize to width
+  return url.replace(
+    "/upload/",
+    `/upload/f_auto,q_auto,w_${width},c_limit/`
+  );
+}
+
 // ── Matches exactly to .NET API returns ──────────────
 interface ApiProject {
   id: string,
@@ -90,12 +101,12 @@ export async function fetchProjects(): Promise<Project[]> {
     id: p.id,
     title: p.title,
     description: p.description,
-    tags: p.technologies,                    // technologies → tags
-    image: p.imageUrl ?? p.thumbnailUrl ?? "",  // imageUrl → image
-    thumbnailUrl: p.thumbnailUrl,
+    tags: p.technologies,
+    image: optimizeCloudinaryUrl(p.imageUrl ?? p.thumbnailUrl, 800),
+    thumbnailUrl: optimizeCloudinaryUrl(p.thumbnailUrl, 600),
     liveUrl: p.liveUrl,
     githubUrl: p.githubUrl,
-  }))
+  }));
 }
 
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
@@ -110,18 +121,16 @@ export async function fetchBlogPosts(): Promise<BlogPost[]> {
     id: b.id,
     title: b.title,
     slug: b.slug,
-    excerpt: b.summary,                      // summary → excerpt
+    excerpt: b.summary,
     content: b.content,
     date: new Date(b.createdAt).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }),                                       // createdAt → formatted date
-    readTime: calcReadTime(b.content),        // calculated
-    category: b.tags[0] ?? "General",        // first tag → category
+      year: "numeric", month: "long", day: "numeric",
+    }),
+    readTime: calcReadTime(b.content),
+    category: b.tags[0] ?? "General",
     tags: b.tags,
-    thumbnailUrl: b.thumbnailUrl,
-    images: b.images,
+    thumbnailUrl: optimizeCloudinaryUrl(b.thumbnailUrl, 600), // ← 600px max, auto quality
+    images: b.images.map(img => optimizeCloudinaryUrl(img, 800)),
     videos: b.videos,
   }));
 }

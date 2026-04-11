@@ -98,6 +98,10 @@ const BlogModal = ({ post, onClose }: { post: BlogPost; onClose: () => void }) =
                 <img
                   src={post.thumbnailUrl}
                   alt={post.title}
+                  width={800}
+                  height={192}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-48 object-cover"
                   onError={e => (e.currentTarget.style.display = "none")}
                 />
@@ -291,6 +295,10 @@ const Blog = () => {
                       <img
                         src={post.thumbnailUrl}
                         alt={post.title}
+                        width={600}
+                        height={144}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-300"
                         onError={e => (e.currentTarget.style.display = "none")}
                       />
