@@ -25,7 +25,7 @@ const Contact = () => {
   useEffect(() => {
     const warmup = async () => {
       try {
-        await fetch(`${API_BASE_URL}/health`);
+        await fetch(`${API_BASE_URL.replace('/api', '')}/health`);
       } catch {
         // silently ignore
       }
