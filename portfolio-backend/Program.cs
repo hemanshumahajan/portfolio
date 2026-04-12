@@ -50,7 +50,7 @@ app.UseCors("AllowFrontend");
 app.UseAuthorization();
 
 app.MapGet("/", () => Results.Ok(new { status = "Portfolio API is running" }));
-app.MapGet("/health", () => Results.Ok(new { status = "Healthy" }));
+app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));
 
 app.MapControllers();
 

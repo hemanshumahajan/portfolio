@@ -20,16 +20,16 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          // Split heavy libraries into separate chunks
-          // loaded only when needed
           "vendor-react": ["react", "react-dom"],
           "vendor-motion": ["framer-motion"],
           "vendor-query": ["@tanstack/react-query"],
           "vendor-ui": ["lucide-react"],
+          "vendor-router": ["react-router-dom"],
         },
       },
     },
-    // Increase chunk size warning limit
     chunkSizeWarningLimit: 600,
+    // ✅ Target modern browsers — removes legacy polyfills
+    target: "es2020",
   },
 }));

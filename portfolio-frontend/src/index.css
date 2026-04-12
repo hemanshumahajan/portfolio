@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ✅ Font metric overrides — MUST be outside @layer */
+@font-face {
+  font-family: 'JetBrains Mono Fallback';
+  src: local('Courier New');
+  ascent-override: 97%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+  size-adjust: 103%;
+}
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+  size-adjust: 100%;
+}
+
 @layer base {
   :root {
     --background: 222 47% 5%;
@@ -47,39 +66,21 @@
     --glow-accent: 260 80% 60%;
     --surface: 222 35% 10%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
 
   body {
     @apply bg-background text-foreground font-sans;
-    font-family: 'Inter', sans-serif;
-    /* Prevent layout shift from scrollbar appearing */
+    font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
     scrollbar-gutter: stable;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  /* ✅ Add font-display swap fallback fonts to reduce layout shift */
-  @font-face {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: local('Inter');
-  }
-
-  @font-face {
-    font-family: 'JetBrains Mono';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: local('JetBrains Mono');
+    font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   }
 
   ::selection {
@@ -128,11 +129,11 @@
   }
 
   .font-mono {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   }
 
   .font-sans {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
   }
 
   .grid-bg {
@@ -142,8 +143,7 @@
     background-size: 60px 60px;
   }
 
-  /* ✅ Fixed typing cursor — uses opacity instead of border-color */
-  /* opacity is GPU composited, border-color is NOT */
+  /* ✅ GPU composited cursor animation */
   .animate-typing-cursor {
     animation: typing-cursor 1s step-end infinite;
     will-change: opacity;
@@ -154,12 +154,12 @@
     50% { opacity: 0; }
   }
 
-  /* ✅ Lazy load images below the fold */
+  /* ✅ Lazy image hint */
   img[loading="lazy"] {
     content-visibility: auto;
   }
 
-  /* ✅ Reduce motion for users who prefer it */
+  /* ✅ Respect reduced motion preference */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;

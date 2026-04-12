@@ -21,14 +21,32 @@
 
     <meta name="theme-color" content="#0f172a" />
 
-    <!-- Preconnect to speed up font loading -->
+    <!-- Preconnects -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Preconnect to Render backend -->
     <link rel="preconnect" href="https://hemanshusportfolio.onrender.com" />
+    <link rel="dns-prefetch" href="https://res.cloudinary.com" />
 
-    <!-- Non-blocking font load -->
+    <!-- ✅ Critical inline CSS — prevents render blocking -->
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      body {
+        background: hsl(222, 47%, 5%);
+        color: hsl(210, 20%, 90%);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      #root { min-height: 100vh; }
+      /* Prevent layout shift before fonts load */
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'JetBrains Mono', 'Courier New', monospace;
+      }
+    </style>
+
+    <!-- ✅ Non-blocking font load -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
