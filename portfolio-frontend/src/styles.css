@@ -1,0 +1,149 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--card);
+  --color-popover-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: oklch(0.6 0.22 25);
+  --color-destructive-foreground: #fff;
+  --color-border: var(--border);
+  --color-input: var(--border);
+  --color-ring: var(--primary);
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Space Grotesk", ui-sans-serif, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, sans-serif;
+  --font-technical: "Fira Code", ui-monospace, monospace;
+}
+
+:root {
+  --background: #0D0D0D;
+  --foreground: #F0F0F0;
+  --surface: #141414;
+  --surface-2: #1A1A1A;
+  --card: #141414;
+  --card-foreground: #F0F0F0;
+  --primary: #00C2FF;
+  --primary-foreground: #0D0D0D;
+  --secondary: #7B61FF;
+  --secondary-foreground: #F0F0F0;
+  --muted: #1A1A1A;
+  --muted-foreground: #888888;
+  --accent: #00C2FF;
+  --accent-foreground: #0D0D0D;
+  --border: #1E1E1E;
+
+  --grid-color: rgba(255, 255, 255, 0.025);
+  --glow-primary: 0 0 24px rgba(0, 194, 255, 0.35);
+  --glow-secondary: 0 0 24px rgba(123, 97, 255, 0.35);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-attachment: fixed;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: rgba(0, 194, 255, 0.3);
+    color: #fff;
+  }
+}
+
+@utility code-label {
+  font-family: var(--font-mono);
+  color: var(--color-muted-foreground);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+
+@utility coord-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-muted-foreground);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@utility glow-primary {
+  box-shadow: var(--glow-primary);
+}
+
+@utility glow-text {
+  text-shadow: 0 0 12px rgba(0, 194, 255, 0.6);
+}
+
+@utility blueprint-bg {
+  background-image:
+    linear-gradient(rgba(0, 194, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 194, 255, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+@utility section-rule {
+  border-top: 1px solid var(--color-border);
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@utility cursor-blink {
+  display: inline-block;
+  width: 0.6ch;
+  background: var(--color-primary);
+  margin-left: 4px;
+  animation: blink 1s steps(1) infinite;
+  box-shadow: 0 0 12px var(--color-primary);
+}
+
+@utility ticker-track {
+  animation: ticker 40s linear infinite;
+}
+
+@keyframes chatpulse {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
