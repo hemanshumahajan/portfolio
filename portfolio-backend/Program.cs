@@ -13,8 +13,8 @@ builder.Services.Configure<MongoDbSettings>(
 builder.Services.AddSingleton<MongoDbService>();
 
 // OpenAI
-builder.Services.Configure<OpenAISettings>(
-    builder.Configuration.GetSection("OpenAISettings"));
+builder.Services.Configure<GeminiSettings>(
+    builder.Configuration.GetSection("GeminiSettings"));
 
 //Email (Resend)
 builder.Services.Configure<EmailSettings>(

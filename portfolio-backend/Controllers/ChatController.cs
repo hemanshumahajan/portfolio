@@ -12,6 +12,9 @@ namespace portfolio_backend.Controllers
     public class ChatController : ControllerBase
     {
         private readonly string _apiKey;
+        private static readonly HttpClient _httpClient = new HttpClient();
+
+        private const string GeminiModel = "gemini-3.5-flash";
 
         private const string SystemPrompt = """
             You are an AI assistant representing Hemanshu Mahajan on his personal portfolio website.
@@ -136,7 +139,7 @@ namespace portfolio_backend.Controllers
             Keep it real. Keep it specific. Keep it human.
             """;
 
-        public ChatController(IOptions<OpenAISettings> settings)
+        public ChatController(IOptions<GeminiSettings> settings)
         {
             _apiKey = settings.Value.ApiKey;
         }
@@ -145,34 +148,34 @@ namespace portfolio_backend.Controllers
         [HttpPost]
         public async Task<IActionResult> Chat([FromBody] ChatRequest request)
         {
-            using var httpClient = new HttpClient();
-            
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
+            var contents = request.Messages.Select(m => new
+            {
+                role = m.Role == "assistant" ? "model" : "user",
+                parts = new[] { new { text = m.Content } }
+            });
 
             var body = new
             {
-                model = "gpt-4o-mini",
-                messages = new[]
+                contents,
+                systemInstruction = new
                 {
-                    new { role = "system", content = SystemPrompt }
+                    parts = new[] { new { text = SystemPrompt } }
+                },
+
+                generationConfig = new
+                {
+                    maxOutputTokens = 2000
                 }
-                .Concat(request.Messages.Select(m => new
-                {
-                    role = m.Role,
-                    content = m.Content
-                })),
-                max_tokens = 2000
             };
 
             var json = JsonSerializer.Serialize(body);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await httpClient.PostAsync(
-                "https://api.openai.com/v1/chat/completions", 
-                content
-            );
+            var url = $"https://generativelanguage.googleapis.com/v1beta/models/{GeminiModel}:generateContent?key={_apiKey}";
 
-            if(!response.IsSuccessStatusCode)
+            var response = await _httpClient.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadAsStringAsync();
                 return StatusCode((int)response.StatusCode, error);
@@ -181,13 +184,59 @@ namespace portfolio_backend.Controllers
             var responseBody = await response.Content.ReadAsStringAsync();
             using var doc = JsonDocument.Parse(responseBody);
 
+            // Gemini's response shape: candidates[0].content.parts[0].text
             var reply = doc.RootElement
-                .GetProperty("choices")[0]
-                .GetProperty("message")
+                .GetProperty("candidates")[0]
                 .GetProperty("content")
+                .GetProperty("parts")[0]
+                .GetProperty("text")
                 .GetString();
 
             return Ok(new { reply });
+
+            //using var httpClient = new HttpClient();
+
+            //httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
+
+            //var body = new
+            //{
+            //    model = "gpt-4o-mini",
+            //    messages = new[]
+            //    {
+            //        new { role = "system", content = SystemPrompt }
+            //    }
+            //    .Concat(request.Messages.Select(m => new
+            //    {
+            //        role = m.Role,
+            //        content = m.Content
+            //    })),
+            //    max_tokens = 2000
+            //};
+
+            //var json = JsonSerializer.Serialize(body);
+            //var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            //var response = await httpClient.PostAsync(
+            //    "https://api.openai.com/v1/chat/completions", 
+            //    content
+            //);
+
+            //if(!response.IsSuccessStatusCode)
+            //{
+            //    var error = await response.Content.ReadAsStringAsync();
+            //    return StatusCode((int)response.StatusCode, error);
+            //}
+
+            //var responseBody = await response.Content.ReadAsStringAsync();
+            //using var doc = JsonDocument.Parse(responseBody);
+
+            //var reply = doc.RootElement
+            //    .GetProperty("choices")[0]
+            //    .GetProperty("message")
+            //    .GetProperty("content")
+            //    .GetString();
+
+            //return Ok(new { reply });
         }
     }
 }
