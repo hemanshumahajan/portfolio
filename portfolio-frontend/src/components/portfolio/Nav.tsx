@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 const LINKS = [
   { href: "#about", label: "About" },

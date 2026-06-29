@@ -1,5 +1,6 @@
 import { Section, FadeIn } from "./primitives";
 import { ArrowRight } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 export function BuildInPublic() {
   return (

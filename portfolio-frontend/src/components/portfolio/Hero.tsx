@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 
 const TITLES = [

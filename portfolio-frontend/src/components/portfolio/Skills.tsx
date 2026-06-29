@@ -1,4 +1,5 @@
 import { Section, FadeIn } from "./primitives";
+import { API_BASE_URL } from "@/lib/api";
 
 const GROUPS = [
   {

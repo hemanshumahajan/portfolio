@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Section, FadeIn } from "./primitives";
 import { Mail, Phone, MapPin, Linkedin, Github, Twitter } from "lucide-react";
-import { API_BASE_URL } from "../lib/api";
+import { API_BASE_URL } from "@/lib/api";
 
 type Status = "idle" | "submitting" | "success" | "error";
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { MessageSquare, X, Send } from "lucide-react";
-import { API_BASE_URL } from "../lib/api";
+import { API_BASE_URL } from "@/lib/api";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
