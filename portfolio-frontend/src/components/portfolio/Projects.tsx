@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Section, FadeIn, Card } from "./primitives";
 import { ArrowRight, Github, ExternalLink } from "lucide-react";
+import { API_BASE_URL } from "../lib/api";
 
 type Project = {
   id: string;
@@ -20,10 +21,12 @@ export function Projects() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/projects")
+    fetch(`${API_BASE_URL}/api/projects`)
       .then((r) => r.json())
+      // Backend's ProjectsController returns a raw array directly,
+      // not wrapped in { projects: [...] }.
       .then((j) => {
-        if (!cancelled) setProjects(Array.isArray(j?.projects) ? j.projects : []);
+        if (!cancelled) setProjects(Array.isArray(j) ? j : []);
       })
       .catch(() => {
         if (!cancelled) {

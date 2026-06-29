@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Section, FadeIn } from "./primitives";
 import { Mail, Phone, MapPin, Linkedin, Github, Twitter } from "lucide-react";
+import { API_BASE_URL } from "../lib/api";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -20,15 +21,22 @@ export function Contact() {
     setStatus("submitting");
     setErrorMsg("");
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(`${API_BASE_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
       const json = await res.json().catch(() => ({}));
-      if (!res.ok || !json.ok) {
+
+      // Backend returns { success: true, message } on success,
+      // or { errors: {...} } with a 400 on validation failure.
+      if (!res.ok || !json.success) {
         setStatus("error");
-        setErrorMsg(json.error ?? "Something went wrong");
+        const firstError =
+          json?.errors && typeof json.errors === "object"
+            ? Object.values(json.errors).flat()[0]
+            : undefined;
+        setErrorMsg((firstError as string) ?? json?.message ?? "Something went wrong");
         return;
       }
       setStatus("success");

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Section, FadeIn, Card } from "./primitives";
 import { ArrowRight } from "lucide-react";
+import { API_BASE_URL } from "../lib/api";
 
 type Post = {
   slug: string;
@@ -16,10 +17,12 @@ export function Blog() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/blog")
+    fetch(`${API_BASE_URL}/api/blog`)
       .then((r) => r.json())
+      // Backend's BlogsController returns a raw array directly,
+      // not wrapped in { posts: [...] }.
       .then((j) => {
-        if (!cancelled) setPosts(Array.isArray(j?.posts) ? j.posts : []);
+        if (!cancelled) setPosts(Array.isArray(j) ? j : []);
       })
       .catch(() => {
         if (!cancelled) {

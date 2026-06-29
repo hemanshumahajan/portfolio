@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { MessageSquare, X, Send } from "lucide-react";
+import { API_BASE_URL } from "../lib/api";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -30,20 +31,25 @@ export function ChatWidget() {
     setInput("");
     setLoading(true);
     try {
-      const res = await fetch("/api/chat", {
+      // Backend expects { messages: [{ role, content }] } and on success
+      // returns { reply } directly (no "ok" field) — non-2xx means error.
+      const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: next }),
       });
-      const json = await res.json().catch(() => ({}));
-      if (!res.ok || !json.ok) {
+
+      if (!res.ok) {
+        const errText = await res.text().catch(() => "");
         setMessages((m) => [
           ...m,
-          { role: "assistant", content: `⚠ ${json.error ?? "Something went wrong."}` },
+          { role: "assistant", content: `⚠ ${errText || "Something went wrong."}` },
         ]);
-      } else {
-        setMessages((m) => [...m, { role: "assistant", content: json.reply || "(no response)" }]);
+        return;
       }
+
+      const json = await res.json().catch(() => ({}));
+      setMessages((m) => [...m, { role: "assistant", content: json.reply || "(no response)" }]);
     } catch {
       setMessages((m) => [...m, { role: "assistant", content: "⚠ Network error." }]);
     } finally {
