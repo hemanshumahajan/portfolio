@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
-import { API_BASE_URL } from "@/lib/api";
 
 
 const TITLES = [
@@ -22,7 +21,7 @@ const TICKER = [
   "SQL",
 ];
 
-export function Hero() {
+function Hero() {
   const [idx, setIdx] = useState(0);
   const [text, setText] = useState("");
   const [phase, setPhase] = useState<"typing" | "pausing" | "deleting">("typing");
@@ -105,3 +104,5 @@ export function Hero() {
     </section>
   );
 }
+
+export default Hero;

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { API_BASE_URL } from "@/lib/api";
 
 const LINKS = [
   { href: "#about", label: "About" },
@@ -10,7 +9,7 @@ const LINKS = [
   { href: "#contact", label: "Contact" },
 ];
 
-export function Nav() {
+function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -74,3 +73,5 @@ export function Nav() {
     </header>
   );
 }
+
+export default Nav;

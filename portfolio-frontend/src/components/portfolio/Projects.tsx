@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Section, FadeIn, Card } from "./primitives";
 import { ArrowRight, Github, ExternalLink } from "lucide-react";
-import { API_BASE_URL } from "@/lib/api";
+import { API_BASE_URL } from "../../lib/api";
 
 type Project = {
   id: string;
@@ -15,7 +15,7 @@ type Project = {
   liveUrl?: string | null;
 };
 
-export function Projects() {
+function Projects() {
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [error, setError] = useState(false);
 
@@ -139,3 +139,5 @@ function EmptyState({ message }: { message: string }) {
     </div>
   );
 }
+
+export default Projects;

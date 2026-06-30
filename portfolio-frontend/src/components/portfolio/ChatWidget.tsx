@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { MessageSquare, X, Send } from "lucide-react";
-import { API_BASE_URL } from "@/lib/api";
+import { API_BASE_URL } from "../../lib/api";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -10,7 +10,7 @@ const SUGGESTIONS = [
   "Are you open to remote work?",
 ];
 
-export function ChatWidget() {
+function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([
     { role: "assistant", content: "Hey! Ask me anything about Hemanshu's work, plugins, or availability." },
@@ -157,3 +157,5 @@ function Dot({ delay = 0 }: { delay?: number }) {
     />
   );
 }
+
+export default ChatWidget;

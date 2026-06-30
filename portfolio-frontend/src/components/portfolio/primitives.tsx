@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
-import { API_BASE_URL } from "@/lib/api";
 
 export function SectionLabel({ children }: { children: ReactNode }) {
   return (

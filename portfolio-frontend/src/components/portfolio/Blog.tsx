@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Section, FadeIn, Card } from "./primitives";
 import { ArrowRight } from "lucide-react";
-import { API_BASE_URL } from "@/lib/api";
+import { API_BASE_URL } from "../../lib/api";
 
 type Post = {
   slug: string;
@@ -11,7 +11,8 @@ type Post = {
   coord?: string;
 };
 
-export function Blog() {
+
+function Blog() {
   const [posts, setPosts] = useState<Post[] | null>(null);
   const [error, setError] = useState(false);
 
@@ -98,3 +99,5 @@ function SkeletonPost() {
     </div>
   );
 }
+
+export default Blog;

@@ -1,8 +1,7 @@
 import { Section, FadeIn } from "./primitives";
 import { ArrowRight } from "lucide-react";
-import { API_BASE_URL } from "@/lib/api";
 
-export function BuildInPublic() {
+function BuildInPublic() {
   return (
     <Section id="build" label="build_in_public" heading="What I'm Building">
       <FadeIn>
@@ -47,3 +46,5 @@ export function BuildInPublic() {
     </Section>
   );
 }
+
+export default BuildInPublic;

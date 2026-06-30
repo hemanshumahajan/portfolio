@@ -1,5 +1,4 @@
 import { Section, FadeIn } from "./primitives";
-import { API_BASE_URL } from "@/lib/api";
 
 const GROUPS = [
   {
@@ -32,7 +31,7 @@ const GROUPS = [
   },
 ];
 
-export function Skills() {
+function Skills() {
   return (
     <Section id="skills" label="tech_stack" heading="What I Work With">
       <div className="grid md:grid-cols-3 gap-6">
@@ -83,3 +82,5 @@ export function Skills() {
     </Section>
   );
 }
+
+export default Skills;

@@ -1,5 +1,4 @@
 import { Section, FadeIn } from "./primitives";
-import { API_BASE_URL } from "@/lib/api";
 
 const TIMELINE = [
   {
@@ -32,7 +31,8 @@ const TIMELINE = [
   },
 ];
 
-export function About() {
+
+function About() {
   return (
     <Section id="about" label="about_me">
       <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
@@ -93,3 +93,5 @@ export function About() {
     </Section>
   );
 }
+
+export default About;
