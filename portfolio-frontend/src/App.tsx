@@ -9,6 +9,7 @@ import Footer from "./components/portfolio/Footer";
 import Nav from "./components/portfolio/Nav";
 import ChatWidget from "./components/portfolio/ChatWidget";
 import BlogPost from "./components/portfolio/BlogPost";
+import ProjectDemo from "./components/portfolio/ProjectDemo";
 
 function Home() {
   return (
@@ -30,6 +31,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/projects/:id" element={<ProjectDemo />} />
       </Routes>
       <Footer />
       <ChatWidget />

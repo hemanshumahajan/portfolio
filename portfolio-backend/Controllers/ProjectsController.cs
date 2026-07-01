@@ -28,7 +28,7 @@ namespace portfolio_backend.Controllers
             
             if(project == null)
             {
-                NotFound();
+                return NotFound();
             }
 
             return Ok(project);

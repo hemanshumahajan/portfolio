@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Section, FadeIn, Card } from "./primitives";
-import { ArrowRight, Github, ExternalLink } from "lucide-react";
+import { ArrowRight, Github, PlayCircle } from "lucide-react";
 import { API_BASE_URL } from "../../lib/api";
 
 type Project = {
@@ -89,14 +90,12 @@ function Projects() {
                     </a>
                   )}
                   {p.liveUrl && (
-                    <a
-                      href={p.liveUrl}
-                      target="_blank"
-                      rel="noreferrer noopener"
+                    <Link
+                      to={`/projects/${p.id}`}
                       className="inline-flex items-center gap-1.5 font-mono text-xs text-primary hover:gap-2.5 transition-all"
                     >
-                      Live <ExternalLink size={14} />
-                    </a>
+                      <PlayCircle size={14} /> Watch Demo
+                    </Link>
                   )}
                   {!p.githubUrl && !p.liveUrl && (
                     <span className="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
