@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Section, FadeIn, Card } from "./primitives";
 import { ArrowRight } from "lucide-react";
 import { API_BASE_URL } from "../../lib/api";
+import { Link } from "react-router-dom";
 
 type Post = {
   slug: string;
@@ -54,7 +55,7 @@ function Blog() {
         <div className="grid md:grid-cols-3 gap-6">
           {posts.map((p, i) => (
             <FadeIn key={p.slug} delay={i * 0.08}>
-              <a href={`/blog/${p.slug}`} className="block h-full">
+              <Link to={`/blog/${p.slug}`} className="block h-full">
                 <Card coord={p.coord} className="h-full flex flex-col group cursor-pointer">
                   <div className="flex flex-wrap gap-1.5 mb-5">
                     {p.tags.map((t) => (
@@ -76,7 +77,7 @@ function Blog() {
                     Read More <ArrowRight size={14} />
                   </span>
                 </Card>
-              </a>
+              </Link>
             </FadeIn>
           ))}
         </div>
