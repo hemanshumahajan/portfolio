@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using portfolio_backend.Models;
@@ -25,6 +26,7 @@ namespace portfolio_backend.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<List<ContactMessage>> GetAll() =>
             await _messages.Find(_ => true)
                    .SortByDescending(m => m.SentAt)

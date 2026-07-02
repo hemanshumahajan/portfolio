@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using portfolio_backend.Models;
 using portfolio_backend.Services;
@@ -35,6 +36,7 @@ namespace portfolio_backend.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(Project project)
         {
             await _projects.InsertOneAsync(project);
@@ -43,6 +45,7 @@ namespace portfolio_backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(string id, Project updated)
         {
             updated.Id = id;
@@ -51,6 +54,7 @@ namespace portfolio_backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
             await _projects.DeleteOneAsync(p => p.Id == id);

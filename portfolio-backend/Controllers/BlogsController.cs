@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using portfolio_backend.Models;
 using portfolio_backend.Services;
@@ -36,6 +37,7 @@ namespace portfolio_backend.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(BlogPost post)
         {
             post.CreatedAt = DateTime.UtcNow;
@@ -46,6 +48,7 @@ namespace portfolio_backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(string id, BlogPost updated)
         {
             updated.Id = id;
@@ -56,6 +59,7 @@ namespace portfolio_backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
             await _blogs.DeleteOneAsync(b => b.Id == id);
