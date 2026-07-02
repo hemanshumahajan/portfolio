@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using portfolio_backend.Models;
+using portfolio_backend.Services;
 using portfolio_backend.Settings;
 using System.Text;
 using System.Text.Json;
@@ -12,6 +14,8 @@ namespace portfolio_backend.Controllers
     public class ChatController : ControllerBase
     {
         private readonly string _apiKey;
+        private readonly IMongoCollection<ChatSession> _sessions;
+        private readonly EmailService _emailService;
         private static readonly HttpClient _httpClient = new HttpClient();
 
         private const string GeminiModel = "gemini-3.5-flash";
@@ -139,9 +143,14 @@ namespace portfolio_backend.Controllers
             Keep it real. Keep it specific. Keep it human.
             """;
 
-        public ChatController(IOptions<GeminiSettings> settings)
+        public ChatController(
+            IOptions<GeminiSettings> settings,
+            MongoDbService db,
+            EmailService emailService)
         {
             _apiKey = settings.Value.ApiKey;
+            _sessions = db.GetCollection<ChatSession>("chatSessions");
+            _emailService = emailService;
         }
 
 
@@ -192,51 +201,48 @@ namespace portfolio_backend.Controllers
                 .GetProperty("text")
                 .GetString();
 
+            // --- Session logging ---
+            if (!string.IsNullOrEmpty(request.SessionId))
+            {
+                var existing = await _sessions.Find(s => s.SessionId == request.SessionId).FirstOrDefaultAsync();
+                var isNewSession = existing == null;
+
+                var fullLog = request.Messages
+                    .Select(m => new ChatMessageLog { Role = m.Role, Content = m.Content, Timestamp = DateTime.UtcNow })
+                    .ToList();
+                fullLog.Add(new ChatMessageLog { Role = "assistant", Content = reply ?? "", Timestamp = DateTime.UtcNow });
+
+                if (isNewSession)
+                {
+                    var session = new ChatSession
+                    {
+                        SessionId = request.SessionId,
+                        Messages = fullLog,
+                        StartedAt = DateTime.UtcNow,
+                        LastMessageAt = DateTime.UtcNow
+                    };
+                    await _sessions.InsertOneAsync(session);
+
+                    try
+                    {
+                        await _emailService.SendNewChatNotificationAsync(session);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Chat email notification failed: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    var update = Builders<ChatSession>.Update
+                        .Set(s => s.Messages, fullLog)
+                        .Set(s => s.LastMessageAt, DateTime.UtcNow);
+                    await _sessions.UpdateOneAsync(s => s.SessionId == request.SessionId, update);
+                }
+            }
+            // --- end session logging ---
+
             return Ok(new { reply });
-
-            //using var httpClient = new HttpClient();
-
-            //httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
-
-            //var body = new
-            //{
-            //    model = "gpt-4o-mini",
-            //    messages = new[]
-            //    {
-            //        new { role = "system", content = SystemPrompt }
-            //    }
-            //    .Concat(request.Messages.Select(m => new
-            //    {
-            //        role = m.Role,
-            //        content = m.Content
-            //    })),
-            //    max_tokens = 2000
-            //};
-
-            //var json = JsonSerializer.Serialize(body);
-            //var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            //var response = await httpClient.PostAsync(
-            //    "https://api.openai.com/v1/chat/completions", 
-            //    content
-            //);
-
-            //if(!response.IsSuccessStatusCode)
-            //{
-            //    var error = await response.Content.ReadAsStringAsync();
-            //    return StatusCode((int)response.StatusCode, error);
-            //}
-
-            //var responseBody = await response.Content.ReadAsStringAsync();
-            //using var doc = JsonDocument.Parse(responseBody);
-
-            //var reply = doc.RootElement
-            //    .GetProperty("choices")[0]
-            //    .GetProperty("message")
-            //    .GetProperty("content")
-            //    .GetString();
-
-            //return Ok(new { reply });
         }
     }
 }

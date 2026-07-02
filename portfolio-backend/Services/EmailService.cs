@@ -52,6 +52,39 @@ namespace portfolio_backend.Services
             }
         }
 
+        public async Task SendNewChatNotificationAsync(ChatSession session)
+        {
+            var html = BuildChatEmailHtml(session);
+
+            var firstUserMessage = session.Messages.FirstOrDefault(m => m.Role == "user")?.Content ?? "";
+            var subjectPreview = firstUserMessage.Length > 60
+                ? firstUserMessage[..60] + "…"
+                : firstUserMessage;
+
+            var payload = new
+            {
+                from = $"Portfolio Chat <{_settings.FromEmail}>",
+                to = new[] { _settings.ToEmail },
+                subject = $"New chat conversation: \"{subjectPreview}\"",
+                html
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(
+                "https://api.resend.com/emails", content);
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("📧 Resend response (chat): " + (int)response.StatusCode + " - " + responseBody);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Resend error: {response.StatusCode} - {error}");
+            }
+        }
+
         private static string BuildEmailHtml(ContactMessage message)
         {
             var date = message.SentAt.ToString("dddd, MMMM d, yyyy") + " at " + message.SentAt.ToString("h:mm tt") + " UTC";
@@ -91,6 +124,42 @@ namespace portfolio_backend.Services
                     "</div>" +
                 "</div>" +
                 "<div class='footer'>Sent from your portfolio contact form</div>" +
+            "</div>" +
+            "</body></html>";
+        }
+
+        private static string BuildChatEmailHtml(ChatSession session)
+        {
+            var date = session.StartedAt.ToString("dddd, MMMM d, yyyy") + " at " + session.StartedAt.ToString("h:mm tt") + " UTC";
+
+            var style = "<style>" +
+                "body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4f4f5;margin:0;padding:24px}" +
+                ".card{background:white;border-radius:12px;max-width:560px;margin:0 auto;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1)}" +
+                ".header{background:#18181b;padding:24px 32px}" +
+                ".header h1{color:white;margin:0;font-size:18px;font-weight:600}" +
+                ".header p{color:#a1a1aa;margin:4px 0 0;font-size:14px}" +
+                ".body{padding:32px}" +
+                ".field{margin-bottom:20px}" +
+                ".label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#71717a;margin-bottom:4px}" +
+                ".message-box{background:#f4f4f5;border-radius:8px;padding:16px;font-size:15px;color:#18181b;line-height:1.6;white-space:pre-wrap}" +
+                ".footer{padding:16px 32px;background:#f4f4f5;font-size:12px;color:#a1a1aa}" +
+                "</style>";
+
+            var firstUserMessage = session.Messages.FirstOrDefault(m => m.Role == "user")?.Content ?? "(no message)";
+
+            return "<!DOCTYPE html><html><head><meta charset='utf-8'>" + style + "</head><body>" +
+            "<div class='card'>" +
+                "<div class='header'>" +
+                    "<h1>New Chat Conversation Started</h1>" +
+                    "<p>" + date + "</p>" +
+                "</div>" +
+                "<div class='body'>" +
+                    "<div class='field'>" +
+                        "<div class='label'>First Message</div>" +
+                        "<div class='message-box'>" + System.Web.HttpUtility.HtmlEncode(firstUserMessage) + "</div>" +
+                    "</div>" +
+                "</div>" +
+                "<div class='footer'>Check the admin panel's Chats tab for the full transcript · Session: " + session.SessionId + "</div>" +
             "</div>" +
             "</body></html>";
         }

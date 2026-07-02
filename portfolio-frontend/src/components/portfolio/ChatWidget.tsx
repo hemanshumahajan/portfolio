@@ -10,6 +10,17 @@ const SUGGESTIONS = [
   "Are you open to remote work?",
 ];
 
+// One ID per browser tab/session — generated once when the widget first
+// mounts and reused for every message sent during this visit, so the
+// backend can group them into a single conversation thread.
+function generateSessionId(): string {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+  // Fallback for older browsers without crypto.randomUUID
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
 function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([
@@ -18,6 +29,7 @@ function ChatWidget() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const sessionIdRef = useRef<string>(generateSessionId());
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -31,12 +43,12 @@ function ChatWidget() {
     setInput("");
     setLoading(true);
     try {
-      // Backend expects { messages: [{ role, content }] } and on success
-      // returns { reply } directly (no "ok" field) — non-2xx means error.
+      // Backend expects { messages: [{ role, content }], sessionId } and on
+      // success returns { reply } directly (no "ok" field) — non-2xx means error.
       const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: next, sessionId: sessionIdRef.current }),
       });
 
       if (!res.ok) {
