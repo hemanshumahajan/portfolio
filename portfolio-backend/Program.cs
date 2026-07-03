@@ -1,13 +1,12 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
+using portfolio_backend.Models;
 using portfolio_backend.Services;
 using portfolio_backend.Settings;
 using portfolio_backend.Validators;
 using System.Text;
-
-// NOTE: this file is unchanged from the previous version — only the using
-// statements above were missing in the copy you had open in the editor.
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +17,7 @@ builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection("MongoDbSettings"));
 builder.Services.AddSingleton<MongoDbService>();
 
-// OpenAI
+// Gemini API
 builder.Services.Configure<GeminiSettings>(
     builder.Configuration.GetSection("GeminiSettings"));
 
@@ -70,10 +69,11 @@ builder.Services.AddSwaggerGen();
 // CORS for React dev server (Vite default = 5173)
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins("http://localhost:5173",
-        "https://hemanshumahajan.vercel.app",
-        "https://hemanshumahajan.com",
-        "https://www.hemanshumahajan.com")
+        policy.WithOrigins(
+            "http://localhost:5173",
+            "https://hemanshumahajan.vercel.app",
+            "https://hemanshumahajan.com",
+            "https://www.hemanshumahajan.com")
         .AllowAnyHeader()
         .AllowAnyMethod()));
 
@@ -89,6 +89,38 @@ app.UseAuthorization();
 
 app.MapGet("/", () => Results.Ok(new { status = "Portfolio API is running" }));
 app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));
+
+app.MapGet("/sitemap.xml", async (MongoDbService db) =>
+{
+    const string baseUrl = "https://hemanshumahajan.com";
+
+    var blogs = db.GetCollection<BlogPost>("blogs");
+    var projects = db.GetCollection<Project>("projects");
+
+    var publishedBlogs = await blogs.Find(b => b.IsPublished).ToListAsync();
+    var allProjects = await projects.Find(_ => true).ToListAsync();
+
+    var sb = new StringBuilder();
+    sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+    sb.AppendLine("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
+
+    sb.AppendLine($"  <url><loc>{baseUrl}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>");
+
+    foreach (var post in publishedBlogs)
+    {
+        var lastmod = post.UpdatedAt.ToString("yyyy-MM-dd");
+        sb.AppendLine($"  <url><loc>{baseUrl}/blog/{post.Slug}</loc><lastmod>{lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>");
+    }
+
+    foreach (var project in allProjects)
+    {
+        sb.AppendLine($"  <url><loc>{baseUrl}/projects/{project.Id}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>");
+    }
+
+    sb.AppendLine("</urlset>");
+
+    return Results.Content(sb.ToString(), "application/xml");
+});
 
 app.MapControllers();
 

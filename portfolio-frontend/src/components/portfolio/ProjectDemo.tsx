@@ -4,6 +4,7 @@ import { ArrowLeft, Github } from "lucide-react";
 import { FadeIn } from "./primitives";
 import { API_BASE_URL } from "../../lib/api";
 import { toDriveEmbedUrl } from "../../lib/drive";
+import { usePageMeta } from "../../lib/usePageMeta";
 
 type Project = {
   id: string;
@@ -63,6 +64,11 @@ function ProjectDemo() {
   }
 
   const embedUrl = project.liveUrl ? toDriveEmbedUrl(project.liveUrl) : null;
+
+  usePageMeta(
+  `${project.title} | Hemanshu Mahajan`,
+  project.description
+  );
 
   return (
     <article className="max-w-4xl mx-auto px-6 py-24 md:py-32">

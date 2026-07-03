@@ -5,6 +5,7 @@ import remarkGfm from "remark-gfm";
 import { ArrowLeft } from "lucide-react";
 import { FadeIn } from "./primitives";
 import { API_BASE_URL } from "../../lib/api";
+import { usePageMeta } from "../../lib/usePageMeta";
 
 type Post = {
   title: string;
@@ -78,6 +79,11 @@ function BlogPost() {
       </div>
     );
   }
+
+  usePageMeta(
+  `${post.title} | Hemanshu Mahajan`,
+  post.summary
+  );
 
   return (
     <article className="max-w-3xl mx-auto px-6 py-24 md:py-32">
