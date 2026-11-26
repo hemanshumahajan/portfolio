@@ -53,6 +53,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+// GitHub stats proxy (cached in memory so visitors never hit GitHub's rate limit)
+builder.Services.Configure<GitHubSettings>(
+    builder.Configuration.GetSection("GitHubSettings"));
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpClient(GitHubStatsService.HttpClientName, client =>
+{
+    client.DefaultRequestHeaders.UserAgent.ParseAdd("hemanshu-portfolio");
+    client.Timeout = TimeSpan.FromSeconds(15);
+});
+builder.Services.AddSingleton<GitHubStatsService>();
+
 //Validation
 builder.Services.AddValidatorsFromAssemblyContaining<ContactMessageValidator>();
 
@@ -66,14 +77,23 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// CORS for React dev server (Vite default = 5173)
+// CORS: production domains + local dev servers. Extra origins (e.g. a Vercel
+// preview URL) can be added without a code change via configuration:
+//   Cors__AllowedOrigins__0=https://my-preview.vercel.app
+string[] defaultOrigins =
+[
+    "http://localhost:5173",
+    "http://localhost:8080",
+    "http://localhost:3000",
+    "https://hemanshumahajan.vercel.app",
+    "https://hemanshumahajan.com",
+    "https://www.hemanshumahajan.com",
+];
+var extraOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins(
-            "http://localhost:5173",
-            "https://hemanshumahajan.vercel.app",
-            "https://hemanshumahajan.com",
-            "https://www.hemanshumahajan.com")
+        policy.WithOrigins(defaultOrigins.Concat(extraOrigins).Distinct().ToArray())
         .AllowAnyHeader()
         .AllowAnyMethod()));
 
