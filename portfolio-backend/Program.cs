@@ -53,6 +53,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+// GitHub stats proxy (cached in memory so visitors never hit GitHub's rate limit)
+builder.Services.Configure<GitHubSettings>(
+    builder.Configuration.GetSection("GitHubSettings"));
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpClient(GitHubStatsService.HttpClientName, client =>
+{
+    client.DefaultRequestHeaders.UserAgent.ParseAdd("hemanshu-portfolio");
+    client.Timeout = TimeSpan.FromSeconds(15);
+});
+builder.Services.AddSingleton<GitHubStatsService>();
+
 //Validation
 builder.Services.AddValidatorsFromAssemblyContaining<ContactMessageValidator>();
 
@@ -66,14 +77,23 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// CORS for React dev server (Vite default = 5173)
+// CORS: production domains + local dev servers. Extra origins (e.g. a Vercel
+// preview URL) can be added without a code change via configuration:
+//   Cors__AllowedOrigins__0=https://my-preview.vercel.app
+string[] defaultOrigins =
+[
+    "http://localhost:5173",
+    "http://localhost:8080",
+    "http://localhost:3000",
+    "https://hemanshumahajan.vercel.app",
+    "https://hemanshumahajan.com",
+    "https://www.hemanshumahajan.com",
+];
+var extraOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins(
-            "http://localhost:5173",
-            "https://hemanshumahajan.vercel.app",
-            "https://hemanshumahajan.com",
-            "https://www.hemanshumahajan.com")
+        policy.WithOrigins(defaultOrigins.Concat(extraOrigins).Distinct().ToArray())
         .AllowAnyHeader()
         .AllowAnyMethod()));
 
@@ -100,21 +120,29 @@ app.MapGet("/sitemap.xml", async (MongoDbService db) =>
     var publishedBlogs = await blogs.Find(b => b.IsPublished).ToListAsync();
     var allProjects = await projects.Find(_ => true).ToListAsync();
 
+    static DateTime ProjectChanged(Project p) => p.UpdatedAt ?? p.CreatedAt;
+    static string LastMod(DateTime? d) => d is { } v ? $"<lastmod>{v.ToUniversalTime():yyyy-MM-dd}</lastmod>" : "";
+
+    // The home page shows the latest posts and projects, so it changes whenever they do.
+    DateTime? latestPost = publishedBlogs.Count > 0 ? publishedBlogs.Max(b => b.UpdatedAt) : null;
+    DateTime? latestProject = allProjects.Count > 0 ? allProjects.Max(ProjectChanged) : null;
+    var homeChanged = new[] { latestPost, latestProject }.Max();
+
     var sb = new StringBuilder();
     sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     sb.AppendLine("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
 
-    sb.AppendLine($"  <url><loc>{baseUrl}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>");
+    sb.AppendLine($"  <url><loc>{baseUrl}/</loc>{LastMod(homeChanged)}<changefreq>weekly</changefreq><priority>1.0</priority></url>");
+    sb.AppendLine($"  <url><loc>{baseUrl}/blog</loc>{LastMod(latestPost)}<changefreq>weekly</changefreq><priority>0.8</priority></url>");
 
     foreach (var post in publishedBlogs)
     {
-        var lastmod = post.UpdatedAt.ToString("yyyy-MM-dd");
-        sb.AppendLine($"  <url><loc>{baseUrl}/blog/{post.Slug}</loc><lastmod>{lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>");
+        sb.AppendLine($"  <url><loc>{baseUrl}/blog/{post.Slug}</loc>{LastMod(post.UpdatedAt)}<changefreq>monthly</changefreq><priority>0.7</priority></url>");
     }
 
     foreach (var project in allProjects)
     {
-        sb.AppendLine($"  <url><loc>{baseUrl}/projects/{project.Id}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>");
+        sb.AppendLine($"  <url><loc>{baseUrl}/projects/{project.Id}</loc>{LastMod(ProjectChanged(project))}<changefreq>monthly</changefreq><priority>0.6</priority></url>");
     }
 
     sb.AppendLine("</urlset>");

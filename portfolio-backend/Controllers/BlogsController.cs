@@ -22,6 +22,16 @@ namespace portfolio_backend.Controllers
                                .ToListAsync();
         }
 
+        // Admin view: includes drafts, which the public endpoint hides.
+        [HttpGet("admin/all")]
+        [Authorize]
+        public async Task<List<BlogPost>> GetAll()
+        {
+            return await _blogs.Find(_ => true)
+                               .SortByDescending(b => b.CreatedAt)
+                               .ToListAsync();
+        }
+
         [HttpGet("{slug}")]
         public async Task<ActionResult<BlogPost>> GetBySlug(string slug)
         {
