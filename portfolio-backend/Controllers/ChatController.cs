@@ -13,13 +13,11 @@ namespace portfolio_backend.Controllers
     [Route("api/[controller]")]
     public class ChatController : ControllerBase
     {
-        private readonly string _apiKey;
+        private readonly GeminiSettings _gemini;
         private readonly IMongoCollection<ChatSession> _sessions;
         private readonly EmailService _emailService;
         private readonly ILogger<ChatController> _logger;
         private static readonly HttpClient _httpClient = new HttpClient();
-
-        private const string GeminiModel = "gemini-3.5-flash";
 
         // Public endpoint backed by a paid API — keep requests bounded.
         private const int MaxMessages = 20;
@@ -147,7 +145,7 @@ namespace portfolio_backend.Controllers
             EmailService emailService,
             ILogger<ChatController> logger)
         {
-            _apiKey = settings.Value.ApiKey;
+            _gemini = settings.Value;
             _sessions = db.GetCollection<ChatSession>("chatSessions");
             _emailService = emailService;
             _logger = logger;
@@ -176,44 +174,30 @@ namespace portfolio_backend.Controllers
             {
                 role = m.Role == "assistant" ? "model" : "user",
                 parts = new[] { new { text = m.Content } }
-            });
+            }).ToList();
 
-            var body = new
+            // Try the main model, then the fallback if the first is overloaded or too slow.
+            var models = new[] { _gemini.Model, _gemini.FallbackModel }
+                .Where(m => !string.IsNullOrWhiteSpace(m))
+                .Distinct()
+                .ToList();
+
+            var succeeded = false;
+            string? reply = null;
+            foreach (var model in models)
             {
-                contents,
-                systemInstruction = new
+                var (ok, retryable, text) = await CallGeminiAsync(model, contents, HttpContext.RequestAborted);
+                if (ok)
                 {
-                    parts = new[] { new { text = SystemPrompt } }
-                },
-
-                generationConfig = new
-                {
-                    maxOutputTokens = 2000
+                    succeeded = true;
+                    reply = text;
+                    break;
                 }
-            };
-
-            var json = JsonSerializer.Serialize(body);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var url = $"https://generativelanguage.googleapis.com/v1beta/models/{GeminiModel}:generateContent?key={_apiKey}";
-
-            string? reply;
-            try
-            {
-                using var response = await _httpClient.PostAsync(url, content);
-                var responseBody = await response.Content.ReadAsStringAsync();
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    _logger.LogError("Gemini returned {Status}: {Body}", (int)response.StatusCode, responseBody);
-                    return StatusCode(StatusCodes.Status502BadGateway, new { error = UnavailableMessage });
-                }
-
-                reply = ExtractReply(responseBody);
+                if (!retryable) break;
             }
-            catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or JsonException)
+
+            if (!succeeded)
             {
-                _logger.LogError(ex, "Gemini request failed");
                 return StatusCode(StatusCodes.Status502BadGateway, new { error = UnavailableMessage });
             }
 
@@ -239,6 +223,57 @@ namespace portfolio_backend.Controllers
             // --- end session logging ---
 
             return Ok(new { reply });
+        }
+
+        // One Gemini call with its own time limit.
+        // Retryable = worth trying the fallback model (rate limit, overload, timeout, network).
+        private async Task<(bool Ok, bool Retryable, string? Reply)> CallGeminiAsync(
+            string model, object contents, CancellationToken requestAborted)
+        {
+            var body = new
+            {
+                contents,
+                systemInstruction = new { parts = new[] { new { text = SystemPrompt } } },
+                generationConfig = new
+                {
+                    maxOutputTokens = 800,
+                    // Answers are short, so skip slow "thinking".
+                    // Gemini 2.x uses a token budget; Gemini 3.x uses a level.
+                    thinkingConfig = model.StartsWith("gemini-2", StringComparison.OrdinalIgnoreCase)
+                        ? (object)new { thinkingBudget = 0 }
+                        : new { thinkingLevel = "low" }
+                }
+            };
+
+            using var timeout = CancellationTokenSource.CreateLinkedTokenSource(requestAborted);
+            timeout.CancelAfter(TimeSpan.FromSeconds(Math.Max(5, _gemini.TimeoutSeconds)));
+
+            var url = $"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={_gemini.ApiKey}";
+            try
+            {
+                using var content = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+                using var response = await _httpClient.PostAsync(url, content, timeout.Token);
+                var responseBody = await response.Content.ReadAsStringAsync(timeout.Token);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var status = (int)response.StatusCode;
+                    _logger.LogWarning("Gemini {Model} returned {Status}: {Body}", model, status, responseBody);
+                    return (false, status == 429 || status >= 500, null);
+                }
+
+                return (true, false, ExtractReply(responseBody));
+            }
+            catch (OperationCanceledException) when (!requestAborted.IsCancellationRequested)
+            {
+                _logger.LogWarning("Gemini {Model} timed out after {Seconds}s", model, _gemini.TimeoutSeconds);
+                return (false, true, null);
+            }
+            catch (Exception ex) when (ex is HttpRequestException or JsonException)
+            {
+                _logger.LogError(ex, "Gemini {Model} request failed", model);
+                return (false, true, null);
+            }
         }
 
         // Gemini's response shape: candidates[0].content.parts[*].text

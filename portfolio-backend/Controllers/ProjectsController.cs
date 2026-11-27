@@ -39,9 +39,11 @@ namespace portfolio_backend.Controllers
         [Authorize]
         public async Task<IActionResult> Create(Project project)
         {
+            project.CreatedAt = DateTime.UtcNow;
+            project.UpdatedAt = project.CreatedAt;
             await _projects.InsertOneAsync(project);
 
-            return CreatedAtAction(nameof(GetById), new {id = project.Id}, project);
+            return CreatedAtAction(nameof(GetById), new { id = project.Id }, project);
         }
 
         [HttpPut("{id}")]
@@ -49,6 +51,7 @@ namespace portfolio_backend.Controllers
         public async Task<IActionResult> Update(string id, Project updated)
         {
             updated.Id = id;
+            updated.UpdatedAt = DateTime.UtcNow;
             await _projects.ReplaceOneAsync(p => p.Id == id, updated);
             return NoContent();
         }

@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { HeroContent, type HomeData } from "@/components/portfolio-content";
 import { PortfolioShell } from "@/components/portfolio-shell";
-import { PortfolioChat } from "@/components/portfolio-chat";
 import { getBlogPosts, getProjects, orNull } from "@/lib/api";
 import { AUTHOR, SITE_URL } from "@/lib/site";
 
@@ -26,15 +25,35 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}/` }],
-    scripts: [{
+        scripts: [{
       type: "application/ld+json",
       children: JSON.stringify({
         "@context": "https://schema.org",
-        "@type": "Person",
-        name: AUTHOR.name,
-        jobTitle: AUTHOR.jobTitle,
-        url: `${SITE_URL}/`,
-        sameAs: [AUTHOR.github, AUTHOR.x, AUTHOR.linkedin],
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": `${SITE_URL}/#website`,
+            url: `${SITE_URL}/`,
+            name: AUTHOR.name,
+            description,
+            inLanguage: "en",
+            publisher: { "@id": `${SITE_URL}/#person` },
+          },
+          {
+            "@type": "Person",
+            "@id": `${SITE_URL}/#person`,
+            name: AUTHOR.name,
+            url: `${SITE_URL}/`,
+            image: `${SITE_URL}/og-image.png`,
+            jobTitle: AUTHOR.jobTitle,
+            description,
+            worksFor: { "@type": "Organization", name: "PanGulf Technologies Limited" },
+            alumniOf: { "@type": "CollegeOrUniversity", name: "JSPM's Rajarshi Shahu College of Engineering" },
+            address: { "@type": "PostalAddress", addressLocality: "Pune", addressRegion: "Maharashtra", addressCountry: "IN" },
+            knowsAbout: ["C#", ".NET", "ASP.NET Core", "REST APIs", "SQL Server", "React", "TypeScript", "MongoDB"],
+            sameAs: [AUTHOR.github, AUTHOR.x, AUTHOR.linkedin],
+          },
+        ],
       }),
     }],
   }),
@@ -43,5 +62,5 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const initial = Route.useLoaderData();
-  return <PortfolioShell><HeroContent initial={initial} /><PortfolioChat /></PortfolioShell>;
+    return <PortfolioShell><HeroContent initial={initial} /></PortfolioShell>;
 }

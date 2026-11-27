@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { ExternalLink, Github, Instagram, Linkedin, Mail } from "lucide-react";
+import { ExternalLink, Github, Instagram, Linkedin, Mail, PlayCircle } from "lucide-react";
 import { AboutSection } from "@/components/about-section";
 import { ContactForm } from "@/components/contact-form";
 import { GithubPanel } from "@/components/github-panel";
 import { Button } from "@/components/ui/button";
-import { formatDate, getBlogPosts, getProjects, toDriveEmbedUrl, type BlogPost, type Project } from "@/lib/api";
+import { formatDate, getBlogPosts, getProjectLinks, getProjects, type BlogPost, type Project } from "@/lib/api";
 import { AUTHOR } from "@/lib/site";
 
 export type HomeData = { projects: Project[] | null; posts: BlogPost[] | null };
@@ -15,7 +15,8 @@ export function HeroContent({ initial }: { initial: HomeData }) {
     <section id="home" className="hero-section content-grid">
       <div className="hero-copy">
         <div className="file-path">hemanshu / portfolio / Program.cs</div>
-        <h1>Enterprise Software Developer <span>(C#/.NET)</span></h1>
+        <h1>Hemanshu Mahajan</h1>
+        <p className="hero-role">Enterprise Software Developer <span>(C#/.NET)</span></p>
         <p className="hero-lede">Builder &amp; Shipper — I ship real, working software.</p>
         <p className="hero-detail">I design dependable backend systems, thoughtful web experiences, and maintainable software that survives beyond the demo.</p>
         <div className="pill-row"><span>React</span><span>C#/.NET</span><span>ASP.NET Core</span></div>
@@ -52,7 +53,8 @@ type CardModel = {
   status: Status;
   tab: string;
   projectId?: string;
-  externalUrl?: string;
+  liveUrl?: string;
+  hasDemo?: boolean;
   githubUrl?: string;
 };
 
@@ -82,8 +84,8 @@ function slugify(text: string) {
 }
 
 function toCard(project: Project): CardModel {
-  const isDemoVideo = !!project.liveUrl && !!toDriveEmbedUrl(project.liveUrl);
-  const status: Status = isDemoVideo ? "demo" : project.liveUrl ? "live" : "progress";
+  const { liveUrl, demoVideoUrl } = getProjectLinks(project);
+  const status: Status = liveUrl ? "live" : demoVideoUrl ? "demo" : "progress";
   const isWeb = project.technologies.some((t) => /react|typescript|\bts\b|next|vue|angular/i.test(t));
   const isDotnet = project.technologies.some((t) => /c#|\.net|asp/i.test(t));
   return {
@@ -94,6 +96,8 @@ function toCard(project: Project): CardModel {
     status,
     tab: `${slugify(project.title)}.${isDotnet && !isWeb ? "cs" : "tsx"}`,
     projectId: project.id,
+    hasDemo: !!demoVideoUrl,
+    ...(liveUrl ? { liveUrl } : {}),
     ...(project.githubUrl ? { githubUrl: project.githubUrl } : {}),
   };
 }
@@ -104,13 +108,25 @@ function ProjectCard({ card, index }: { card: CardModel; index: number }) {
       <div className="project-tab">{card.tab}</div>
       <div className="project-body">
         <div className="project-top"><span className={`status ${card.status}`}>{STATUS_LABEL[card.status]}</span><span className="project-index">{String(index + 1).padStart(2, "0")}</span></div>
-        <h3>{card.title}</h3>
+        <h3>{card.projectId ? <Link to="/projects/$id" params={{ id: card.projectId }}>{card.title}</Link> : card.title}</h3>
         <p>{card.description}</p>
         {card.technologies.length > 0 && <div className="pill-row">{card.technologies.map((t) => <span key={t}>{t}</span>)}</div>}
-        <div className="project-links">
-          {card.projectId && <Link className="text-link" to="/projects/$id" params={{ id: card.projectId }}>View project</Link>}
-          {card.externalUrl && <a className="text-link" href={card.externalUrl} target="_blank" rel="noreferrer">View live <ExternalLink /></a>}
-          {card.githubUrl && <a className="text-link" href={card.githubUrl} target="_blank" rel="noreferrer"><Github /> Code</a>}
+        <div className="project-actions">
+          {card.liveUrl && (
+            <Button asChild variant="hero">
+              <a href={card.liveUrl} target="_blank" rel="noreferrer">View project <ExternalLink /></a>
+            </Button>
+          )}
+          {card.hasDemo && card.projectId && (
+            <Button asChild variant="glass">
+              <Link to="/projects/$id" params={{ id: card.projectId }}><PlayCircle /> View demo</Link>
+            </Button>
+          )}
+          {card.githubUrl && (
+            <Button asChild variant="glass">
+              <a href={card.githubUrl} target="_blank" rel="noreferrer"><Github /> Code</a>
+            </Button>
+          )}
         </div>
       </div>
     </article>
@@ -147,7 +163,7 @@ export function WritingContent({ initial }: { initial: BlogPost[] | null }) {
   });
 
   return <section className="page-section">
-    <div className="section-heading"><h2>Writing</h2><p>Notes from building enterprise software in public.</p></div>
+    <div className="section-heading"><h2>Writing</h2><p>Notes from building enterprise software in public.<br /><Link to="/blog" className="section-link">View all posts</Link></p></div>
     {data && data.length > 0 ? (
       <div className="writing-grid">
         {data.map((post) => (

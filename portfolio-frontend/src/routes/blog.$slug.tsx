@@ -1,15 +1,16 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { code } from "@streamdown/code";
 import { ArrowLeft } from "lucide-react";
-import { Streamdown } from "streamdown";
+import { Streamdown, type Components } from "streamdown";
 import { DetailNotFound } from "@/components/detail-not-found";
 import { MediaEmbed } from "@/components/media-embed";
-import { PortfolioChat } from "@/components/portfolio-chat";
 import { PortfolioShell } from "@/components/portfolio-shell";
 import { ApiError, formatDate, getBlogPost } from "@/lib/api";
 import { AUTHOR, absoluteUrl } from "@/lib/site";
 
 const markdownPlugins = { code };
+// The page title is the only <h1>; a "# Heading" written inside a post renders as <h2>.
+const markdownComponents: Components = { h1: "h2" };
 
 export const Route = createFileRoute("/blog/$slug")({
   // Server-rendered, so crawlers get the full article, meta tags and JSON-LD.
@@ -26,6 +27,7 @@ export const Route = createFileRoute("/blog/$slug")({
   head: ({ loaderData: post, params }) => {
     if (!post) return { meta: [{ title: "Post not found | Hemanshu Mahajan" }, { name: "robots", content: "noindex" }] };
     const url = absoluteUrl(`/blog/${params.slug}`);
+    const home = absoluteUrl("/");
     const image = post.coverImageUrl || post.thumbnailUrl;
     return {
       meta: [
@@ -35,11 +37,12 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "og:title", content: post.title },
         { property: "og:description", content: post.summary },
         { property: "og:url", content: url },
-        ...(image ? [{ property: "og:image", content: image }] : []),
+        ...(image ? [{ property: "og:image", content: image }, { name: "twitter:image", content: image }] : []),
         { property: "article:published_time", content: post.createdAt },
         { property: "article:modified_time", content: post.updatedAt },
+        { property: "article:author", content: AUTHOR.name },
         ...post.tags.map((tag) => ({ property: "article:tag", content: tag })),
-        { name: "twitter:card", content: image ? "summary_large_image" : "summary" },
+        { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: post.title },
         { name: "twitter:description", content: post.summary },
       ],
@@ -48,15 +51,31 @@ export const Route = createFileRoute("/blog/$slug")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "Article",
-          headline: post.title,
-          description: post.summary,
-          datePublished: post.createdAt,
-          dateModified: post.updatedAt,
-          ...(image ? { image } : {}),
-          keywords: post.tags.join(", "),
-          mainEntityOfPage: url,
-          author: { "@type": "Person", name: AUTHOR.name, url: absoluteUrl("/"), sameAs: [AUTHOR.github, AUTHOR.x, AUTHOR.linkedin] },
+          "@graph": [
+            {
+              "@type": "BlogPosting",
+              "@id": `${url}#article`,
+              url,
+              mainEntityOfPage: url,
+              headline: post.title,
+              description: post.summary,
+              datePublished: post.createdAt,
+              dateModified: post.updatedAt,
+              inLanguage: "en",
+              keywords: post.tags.join(", "),
+              ...(image ? { image } : {}),
+              author: { "@type": "Person", "@id": `${home}#person`, name: AUTHOR.name, url: home },
+              publisher: { "@type": "Person", "@id": `${home}#person`, name: AUTHOR.name, url: home },
+            },
+            {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: home },
+                { "@type": "ListItem", position: 2, name: "Writing", item: absoluteUrl("/blog") },
+                { "@type": "ListItem", position: 3, name: post.title, item: url },
+              ],
+            },
+          ],
         }),
       }],
     };
@@ -71,7 +90,7 @@ function BlogPostPage() {
   return (
     <PortfolioShell openFile={{ name: `${post.slug}.md`, section: "blog" }}>
       <article className="detail-page">
-        <Link to="/" hash="blog" className="detail-back"><ArrowLeft /> All writing</Link>
+          <Link to="/blog" className="detail-back"><ArrowLeft /> All writing</Link>
         <div className="file-path">hemanshu / writing / {post.slug}.md</div>
         <h1>{post.title}</h1>
         <div className="detail-meta">
@@ -83,7 +102,7 @@ function BlogPostPage() {
         {post.tags.length > 0 && <div className="pill-row">{post.tags.map((t) => <span key={t}>{t}</span>)}</div>}
         {post.coverImageUrl && <img className="detail-cover" src={post.coverImageUrl} alt={post.title} />}
         <div className="blog-prose">
-          <Streamdown plugins={markdownPlugins}>{post.content}</Streamdown>
+          <Streamdown plugins={markdownPlugins} components={markdownComponents}>{post.content}</Streamdown>
         </div>
         {(post.images.length > 0 || post.videos.length > 0) && (
           <div className="detail-media">
@@ -92,7 +111,6 @@ function BlogPostPage() {
           </div>
         )}
       </article>
-      <PortfolioChat />
     </PortfolioShell>
   );
 }

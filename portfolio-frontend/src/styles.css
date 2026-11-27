@@ -1,6 +1,8 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/jetbrains-mono";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -19,8 +21,8 @@
  */
 
 @theme inline {
-  --font-sans: "Geist", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Geist Variable", "Geist", sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", monospace;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -172,7 +174,7 @@
   .activity-bar { animation: boot-left .2s ease-out both; }
   .tab-bar { animation: boot-fade .25s .1s ease-out both; }
   .status-bar { animation: boot-up .25s .15s ease-out both; }
-  main { animation: boot-main .45s .25s ease-out both; }
+    main { animation: boot-main .45s .25s ease-out backwards; }
   .activity-link { position: relative; display: grid; width: 100%; height: 48px; place-items: center; color: var(--muted-foreground); transition: color .2s, background .2s; }
   .activity-link:hover { color: var(--foreground); background: var(--glass); }
   .activity-link-active { color: var(--foreground); }
@@ -183,14 +185,16 @@
   .mobile-nav-link { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--muted-foreground); font: 500 10px var(--font-mono); }
   .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); box-shadow: 0 0 9px color-mix(in oklab, var(--success) 60%, transparent); }
   .content-grid { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
-  .hero-section { min-height: calc(100vh - 72px); display: flex; align-items: center; padding-block: 76px 92px; }
-  .hero-copy { max-width: 880px; }
+    .hero-section { min-height: calc(100vh - 72px); display: flex; align-items: center; justify-content: center; padding-block: 76px 92px; text-align: center; }
+  .hero-copy { display: flex; max-width: 1100px; flex-direction: column; align-items: center; }
   .file-path, .section-divider { font: 500 11px var(--font-mono); color: var(--muted-foreground); }
   .file-path { margin-bottom: 20px; }
-  .hero-copy h1 { max-width: 720px; margin: 0; font-size: clamp(3rem, 5.8vw, 5.9rem); line-height: .98; letter-spacing: 0; }
-  .hero-copy h1 span { color: var(--primary); }
-  .hero-lede { margin: 28px 0 10px; font-size: clamp(1.15rem, 2vw, 1.45rem); color: var(--foreground); }
-  .hero-detail { max-width: 630px; margin: 0; color: var(--muted-foreground); line-height: 1.75; }
+  .hero-copy h1 { margin: 0; font-size: clamp(3.2rem, 7.4vw, 7.5rem); line-height: .95; letter-spacing: -0.02em; text-wrap: balance; }
+  .hero-role { margin: 22px 0 0; font-size: clamp(1.35rem, 2.8vw, 2.35rem); font-weight: 500; line-height: 1.2; color: var(--foreground); text-wrap: balance; }
+  .hero-role span { color: var(--primary); }
+  .hero-lede { margin: 26px 0 10px; font-size: clamp(1.1rem, 1.8vw, 1.35rem); color: var(--foreground); }
+  .hero-detail { max-width: 630px; margin: 0 auto; color: var(--muted-foreground); line-height: 1.75; }
+  .hero-copy .pill-row, .hero-copy .cta-row { justify-content: center; }
   .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
   .pill-row span { border: 1px solid var(--border); border-radius: 6px; background: var(--glass); padding: 6px 9px; color: var(--muted-foreground); font: 500 11px var(--font-mono); }
   .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
@@ -229,7 +233,7 @@
   .contact-links { display: flex; flex-wrap: wrap; gap: 10px 24px; margin: 28px 0 52px; } .contact-links a, .disabled-link { display: inline-flex; align-items: center; gap: 7px; color: var(--foreground); } .contact-links svg { width: 15px; } .disabled-link { color: var(--muted-foreground); cursor: not-allowed; }
   .route-page { padding-top: 40px; } .contact-route { min-height: calc(100vh - 72px); display: grid; align-items: center; padding-top: 48px; } .contact-standalone { border-top: 0; }
   .chat-trigger { position: fixed; right: 22px; bottom: 46px; z-index: 60; width: 46px; height: 46px; border-radius: 8px; }
-  .chat-panel { position: fixed; right: 22px; bottom: 102px; z-index: 60; display: flex; width: min(390px, calc(100vw - 28px)); height: min(600px, calc(100vh - 140px)); flex-direction: column; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: color-mix(in oklab, var(--chrome) 88%, transparent); backdrop-filter: blur(24px); box-shadow: 0 24px 80px oklch(0 0 0 / 45%); }
+  .chat-panel { position: fixed; right: 22px; bottom: 102px; z-index: 60; display: flex; width: min(390px, calc(100vw - 28px)); height: min(600px, calc(100vh - 140px)); flex-direction: column; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: var(--chrome); box-shadow: 0 24px 80px oklch(0 0 0 / 45%); }
   .chat-panel > header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding: 12px; } .chat-panel > header > div { display: flex; align-items: center; gap: 10px; } .chat-panel header strong, .chat-panel header small { display: block; } .chat-panel header small { color: var(--muted-foreground); font: 9px var(--font-mono); margin-top: 2px; }
   .agent-mark { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 6px; background: var(--primary); color: var(--primary-foreground); } .agent-mark svg { width: 18px; }
   .suggestions { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 10px; } .suggestions button { border: 1px solid var(--border); border-radius: 6px; background: var(--glass); padding: 7px 9px; color: var(--muted-foreground); font: 10px var(--font-mono); cursor: pointer; }
@@ -256,7 +260,8 @@
   /* Work */
   .project-card h3 { margin: 38px 0 12px; font-size: 1.65rem; }
   .status.demo { color: var(--primary); background: color-mix(in oklab, var(--primary) 12%, transparent); }
-  .project-links { display: flex; flex-wrap: wrap; gap: 0 24px; } .project-links .text-link:hover { color: var(--primary); }
+    .project-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .project-card h3 a { transition: color .2s; } .project-card h3 a:hover { color: var(--primary); }
 
   /* Writing */
   .writing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
@@ -266,6 +271,9 @@
   .writing-card h3 { margin: 0; font-size: 1.35rem; line-height: 1.25; color: var(--foreground); }
   .writing-card p { margin: 0; color: var(--muted-foreground); line-height: 1.65; }
   .writing-card .pill-row { margin-top: 6px; }
+  .writing-card h2 { margin: 0; font-size: 1.35rem; line-height: 1.25; color: var(--foreground); }
+  .section-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; color: var(--primary); font-weight: 500; }
+  .section-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 
   /* Contact */
   .contact-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 56px; align-items: start; }

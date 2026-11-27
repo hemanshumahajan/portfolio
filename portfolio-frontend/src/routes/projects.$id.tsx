@@ -2,10 +2,10 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import { DetailNotFound } from "@/components/detail-not-found";
 import { MediaEmbed } from "@/components/media-embed";
-import { PortfolioChat } from "@/components/portfolio-chat";
 import { PortfolioShell } from "@/components/portfolio-shell";
-import { ApiError, getProject, toDriveEmbedUrl } from "@/lib/api";
-import { absoluteUrl } from "@/lib/site";
+import { Button } from "@/components/ui/button";
+import { ApiError, getProject, getProjectLinks } from "@/lib/api";
+import { AUTHOR, absoluteUrl } from "@/lib/site";
 
 const OBJECT_ID = /^[a-f\d]{24}$/i;
 
@@ -24,19 +24,48 @@ export const Route = createFileRoute("/projects/$id")({
   head: ({ loaderData: project, params }) => {
     if (!project) return { meta: [{ title: "Project not found | Hemanshu Mahajan" }, { name: "robots", content: "noindex" }] };
     const url = absoluteUrl(`/projects/${params.id}`);
+    const home = absoluteUrl("/");
     const image = project.imageUrl || project.thumbnailUrl;
+    const { liveUrl } = getProjectLinks(project);
     return {
       meta: [
         { title: `${project.title} | Hemanshu Mahajan` },
-        { name: "description", content: project.description },
+        { name: "description", content: project.description.slice(0, 160) },
         { property: "og:type", content: "website" },
         { property: "og:title", content: project.title },
-        { property: "og:description", content: project.description },
+        { property: "og:description", content: project.description.slice(0, 200) },
         { property: "og:url", content: url },
-        ...(image ? [{ property: "og:image", content: image }] : []),
-        { name: "twitter:card", content: image ? "summary_large_image" : "summary" },
+        ...(image ? [{ property: "og:image", content: image }, { name: "twitter:image", content: image }] : []),
+        { name: "twitter:card", content: "summary_large_image" },
       ],
       links: [{ rel: "canonical", href: url }],
+      scripts: [{
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "CreativeWork",
+              "@id": `${url}#project`,
+              url,
+              name: project.title,
+              description: project.description,
+              keywords: project.technologies.join(", "),
+              dateCreated: project.createdAt,
+              ...(image ? { image } : {}),
+              sameAs: [project.githubUrl, liveUrl].filter(Boolean),
+              author: { "@type": "Person", "@id": `${home}#person`, name: AUTHOR.name, url: home },
+            },
+            {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: home },
+                { "@type": "ListItem", position: 2, name: project.title, item: url },
+              ],
+            },
+          ],
+        }),
+      }],
     };
   },
   component: ProjectPage,
@@ -45,7 +74,7 @@ export const Route = createFileRoute("/projects/$id")({
 
 function ProjectPage() {
   const project = Route.useLoaderData();
-  const isDemoVideo = !!project.liveUrl && !!toDriveEmbedUrl(project.liveUrl);
+  const { liveUrl, demoVideoUrl } = getProjectLinks(project);
 
   return (
     <PortfolioShell openFile={{ name: `${project.title.toLowerCase().replace(/[^\w]+/g, "-").replace(/^-|-$/g, "")}.project`, section: "work" }}>
@@ -55,20 +84,27 @@ function ProjectPage() {
         <h1>{project.title}</h1>
         {project.technologies.length > 0 && <div className="pill-row">{project.technologies.map((t) => <span key={t}>{t}</span>)}</div>}
 
-        {isDemoVideo && project.liveUrl ? (
-          <MediaEmbed url={project.liveUrl} title={`${project.title} demo video`} />
+        {demoVideoUrl ? (
+          <MediaEmbed url={demoVideoUrl} title={`${project.title} demo video`} />
         ) : project.imageUrl ? (
           <img className="detail-cover" src={project.imageUrl} alt={`${project.title} screenshot`} />
         ) : null}
 
         <p className="detail-lede">{project.description}</p>
 
-        <div className="project-links">
-          {project.liveUrl && !isDemoVideo && <a className="text-link" href={project.liveUrl} target="_blank" rel="noreferrer">View live <ExternalLink /></a>}
-          {project.githubUrl && <a className="text-link" href={project.githubUrl} target="_blank" rel="noreferrer"><Github /> Code</a>}
+        <div className="project-actions">
+          {liveUrl && (
+            <Button asChild variant="hero">
+              <a href={liveUrl} target="_blank" rel="noreferrer">View live project <ExternalLink /></a>
+            </Button>
+          )}
+          {project.githubUrl && (
+            <Button asChild variant="glass">
+              <a href={project.githubUrl} target="_blank" rel="noreferrer"><Github /> Code</a>
+            </Button>
+          )}
         </div>
       </article>
-      <PortfolioChat />
     </PortfolioShell>
   );
 }

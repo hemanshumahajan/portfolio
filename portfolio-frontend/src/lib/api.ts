@@ -13,6 +13,7 @@ export type Project = {
   technologies: string[];
   githubUrl?: string | null;
   liveUrl?: string | null;
+  demoVideoUrl?: string | null;
   imageUrl?: string | null;
   thumbnailUrl?: string | null;
   createdAt: string;
@@ -134,6 +135,20 @@ export function toDriveEmbedUrl(url: string): string | null {
   if (!/drive\.google\.com/.test(url)) return null;
   const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
   return match ? `https://drive.google.com/file/d/${match[1]}/preview` : null;
+}
+
+/**
+ * Splits a project's links into the live site and the demo video.
+ * Older projects stored their Google Drive demo in liveUrl, so a Drive link
+ * there still counts as the demo until it's moved to demoVideoUrl in admin.
+ */
+export function getProjectLinks(project: Pick<Project, "liveUrl" | "demoVideoUrl">) {
+  const live = project.liveUrl?.trim() || null;
+  const liveIsVideo = !!live && !!toDriveEmbedUrl(live);
+  return {
+    liveUrl: liveIsVideo ? null : live,
+    demoVideoUrl: project.demoVideoUrl?.trim() || (liveIsVideo ? live : null),
+  };
 }
 
 export function formatDate(iso: string, month: "short" | "long" = "short") {

@@ -120,21 +120,29 @@ app.MapGet("/sitemap.xml", async (MongoDbService db) =>
     var publishedBlogs = await blogs.Find(b => b.IsPublished).ToListAsync();
     var allProjects = await projects.Find(_ => true).ToListAsync();
 
+    static DateTime ProjectChanged(Project p) => p.UpdatedAt ?? p.CreatedAt;
+    static string LastMod(DateTime? d) => d is { } v ? $"<lastmod>{v.ToUniversalTime():yyyy-MM-dd}</lastmod>" : "";
+
+    // The home page shows the latest posts and projects, so it changes whenever they do.
+    DateTime? latestPost = publishedBlogs.Count > 0 ? publishedBlogs.Max(b => b.UpdatedAt) : null;
+    DateTime? latestProject = allProjects.Count > 0 ? allProjects.Max(ProjectChanged) : null;
+    var homeChanged = new[] { latestPost, latestProject }.Max();
+
     var sb = new StringBuilder();
     sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     sb.AppendLine("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
 
-    sb.AppendLine($"  <url><loc>{baseUrl}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>");
+    sb.AppendLine($"  <url><loc>{baseUrl}/</loc>{LastMod(homeChanged)}<changefreq>weekly</changefreq><priority>1.0</priority></url>");
+    sb.AppendLine($"  <url><loc>{baseUrl}/blog</loc>{LastMod(latestPost)}<changefreq>weekly</changefreq><priority>0.8</priority></url>");
 
     foreach (var post in publishedBlogs)
     {
-        var lastmod = post.UpdatedAt.ToString("yyyy-MM-dd");
-        sb.AppendLine($"  <url><loc>{baseUrl}/blog/{post.Slug}</loc><lastmod>{lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>");
+        sb.AppendLine($"  <url><loc>{baseUrl}/blog/{post.Slug}</loc>{LastMod(post.UpdatedAt)}<changefreq>monthly</changefreq><priority>0.7</priority></url>");
     }
 
     foreach (var project in allProjects)
     {
-        sb.AppendLine($"  <url><loc>{baseUrl}/projects/{project.Id}</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>");
+        sb.AppendLine($"  <url><loc>{baseUrl}/projects/{project.Id}</loc>{LastMod(ProjectChanged(project))}<changefreq>monthly</changefreq><priority>0.6</priority></url>");
     }
 
     sb.AppendLine("</urlset>");

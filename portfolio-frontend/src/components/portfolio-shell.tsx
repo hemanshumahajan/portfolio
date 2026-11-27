@@ -1,7 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { BriefcaseBusiness, Code2, FileCode2, Github, Home, Mail, NotebookPen, UserRound } from "lucide-react";
 import { useEffect, useState, type MouseEvent, type ReactNode } from "react";
-import mark from "@/assets/hemanshu-mark.png";
+import { PortfolioChat } from "@/components/portfolio-chat";
 
 const items = [
   { id: "home", label: "Home", file: "Hero.tsx", icon: Home },
@@ -85,7 +85,7 @@ export function PortfolioShell({ children, openFile }: ShellProps) {
     <div className="workspace min-h-screen bg-background text-foreground">
       <aside className="activity-bar fixed inset-y-0 left-0 z-50 hidden w-[60px] flex-col items-center border-r border-border bg-chrome/90 py-3 backdrop-blur-xl lg:flex">
         <SectionLink id="home" aria-label="Hemanshu Mahajan home" className="mb-5 grid size-10 place-items-center">
-          <img src={mark} alt="Hemanshu Mahajan monogram" width={40} height={40} className="size-9 object-contain" />
+          <img src="/favicon.svg" alt="Hemanshu Mahajan monogram" width={36} height={36} className="size-9" />
         </SectionLink>
         <nav aria-label="Primary" className="flex w-full flex-1 flex-col items-center gap-1">
           {items.map(({ id, label, icon: Icon }) => (
@@ -119,6 +119,8 @@ export function PortfolioShell({ children, openFile }: ShellProps) {
       </header>
 
       <main className="relative min-h-screen pb-24 pt-12 md:pt-11 lg:ml-[60px] lg:pb-16">{children}</main>
+
+      <PortfolioChat />
 
       <nav aria-label="Mobile navigation" className="fixed inset-x-0 bottom-0 z-50 grid h-16 grid-cols-5 border-t border-border bg-chrome/95 px-2 backdrop-blur-xl md:hidden">
         {items.map(({ id, label, icon: Icon }) => (
