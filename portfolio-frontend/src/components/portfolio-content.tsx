@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ExternalLink, Github, Instagram, Linkedin, Mail, PlayCircle } from "lucide-react";
 import { AboutSection } from "@/components/about-section";
 import { ContactForm } from "@/components/contact-form";
-import { GithubPanel } from "@/components/github-panel";
+import { SkillsSection } from "@/components/skills-section";
 import { Button } from "@/components/ui/button";
 import { formatDate, getBlogPosts, getProjectLinks, getProjects, type BlogPost, type Project } from "@/lib/api";
 import { AUTHOR } from "@/lib/site";
@@ -30,8 +30,8 @@ export function HeroContent({ initial }: { initial: HomeData }) {
     <AboutSection />
     <div className="section-divider"><span>02</span><span>BUILD OUTPUT</span></div>
     <div id="work" className="scroll-mt-14"><WorkContent initial={initial.projects} /></div>
-    <div className="section-divider"><span>03</span><span>ACTIVITY</span></div>
-    <section className="page-section"><div className="section-heading"><h2>Coding Activity</h2><p>Live public GitHub metrics and a record of consistent practice.</p></div><GithubPanel full /></section>
+    <div className="section-divider"><span>03</span><span>SKILLS</span></div>
+    <SkillsSection />
     <div className="section-divider"><span>04</span><span>WRITING</span></div>
     <div id="blog" className="scroll-mt-14"><WritingContent initial={initial.posts} /></div>
     <div id="contact" className="scroll-mt-14"><ContactPanel /></div>

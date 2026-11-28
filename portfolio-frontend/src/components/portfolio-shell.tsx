@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { BriefcaseBusiness, Code2, FileCode2, Github, Home, Mail, NotebookPen, UserRound } from "lucide-react";
+import { BriefcaseBusiness, Code2, FileCode2, Github, Home, Layers, Mail, NotebookPen, UserRound } from "lucide-react";
 import { useEffect, useState, type MouseEvent, type ReactNode } from "react";
 import { PortfolioChat } from "@/components/portfolio-chat";
 
@@ -7,6 +7,7 @@ const items = [
   { id: "home", label: "Home", file: "Hero.tsx", icon: Home },
   { id: "about", label: "About", file: "About.tsx", icon: UserRound },
   { id: "work", label: "Work", file: "Work.tsx", icon: BriefcaseBusiness },
+  { id: "skills", label: "Skills", file: "Skills.tsx", icon: Layers },
   { id: "blog", label: "Blog", file: "Blog.tsx", icon: NotebookPen },
   { id: "contact", label: "Contact", file: "Contact.tsx", icon: Mail },
 ] as const;
@@ -122,7 +123,7 @@ export function PortfolioShell({ children, openFile }: ShellProps) {
 
       <PortfolioChat />
 
-      <nav aria-label="Mobile navigation" className="fixed inset-x-0 bottom-0 z-50 grid h-16 grid-cols-5 border-t border-border bg-chrome/95 px-2 backdrop-blur-xl md:hidden">
+      <nav aria-label="Mobile navigation" className="fixed inset-x-0 bottom-0 z-50 grid h-16 grid-cols-6 border-t border-border bg-chrome/95 px-2 backdrop-blur-xl md:hidden">
         {items.map(({ id, label, icon: Icon }) => (
           <SectionLink key={id} id={id} {...(active === id ? { "aria-current": "true" as const } : {})} className={active === id ? "mobile-nav-link text-primary" : "mobile-nav-link"}>
             <Icon className="size-5" /><span>{label}</span>
