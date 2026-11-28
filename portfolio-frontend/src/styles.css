@@ -259,6 +259,7 @@
 
   /* Work */
   .project-card h3 { margin: 38px 0 12px; font-size: 1.65rem; }
+  .project-card p { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .status.demo { color: var(--primary); background: color-mix(in oklab, var(--primary) 12%, transparent); }
     .project-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
   .project-card h3 a { transition: color .2s; } .project-card h3 a:hover { color: var(--primary); }
