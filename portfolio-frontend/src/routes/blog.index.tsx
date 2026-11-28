@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Rss } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { PortfolioShell } from "@/components/portfolio-shell";
 import { formatDate, getBlogPosts, orNull } from "@/lib/api";
 import { AUTHOR, absoluteUrl } from "@/lib/site";
@@ -69,10 +69,7 @@ function BlogIndexPage() {
         <Link to="/" className="detail-back"><ArrowLeft /> Home</Link>
         <div className="section-heading">
           <h1>Writing</h1>
-          <p>
-            Notes from building enterprise software in public.<br />
-            <a className="section-link" href="/rss.xml"><Rss className="inline size-3.5" /> RSS feed</a>
-          </p>
+          <p>Notes from building enterprise software in public.</p>
         </div>
         {posts && posts.length > 0 ? (
           <div className="writing-grid">
